@@ -13,10 +13,66 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Classes">
+      <UniqueIdentifier>{8f4e2cd4-be6c-4269-a5d3-a69e5f8b36d2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes\Game">
+      <UniqueIdentifier>{9f9e1c36-7fe2-41a4-ae4c-9ff0bccee2af}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes\States">
+      <UniqueIdentifier>{f3adc853-2570-4bbe-882f-c3e02258a0d6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes\States\GameState">
+      <UniqueIdentifier>{3baf47e1-aaf8-45ab-8bfa-5e32b564779d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes\States\MainMenuState">
+      <UniqueIdentifier>{70dcb54f-e46c-4c86-bb1f-bb0f13b7e473}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes\Ressources files">
+      <UniqueIdentifier>{435315f8-29b6-4268-82b3-1e14109fa395}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes\Ressources files\Button">
+      <UniqueIdentifier>{d1dc0e7f-a596-4d61-9f74-906a0b6620e4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Vampage.cpp">
+    <ClCompile Include="Main.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
+    <ClCompile Include="Game.cpp">
+      <Filter>Classes\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="State.cpp">
+      <Filter>Classes\States</Filter>
+    </ClCompile>
+    <ClCompile Include="GameState.cpp">
+      <Filter>Classes\States\GameState</Filter>
+    </ClCompile>
+    <ClCompile Include="MainMenuState.cpp">
+      <Filter>Classes\States\MainMenuState</Filter>
+    </ClCompile>
+    <ClCompile Include="Button.cpp">
+      <Filter>Classes\Ressources files\Button</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Game.h">
+      <Filter>Classes\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="pch.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="State.h">
+      <Filter>Classes\States</Filter>
+    </ClInclude>
+    <ClInclude Include="GameState.h">
+      <Filter>Classes\States\GameState</Filter>
+    </ClInclude>
+    <ClInclude Include="MainMenuState.h">
+      <Filter>Classes\States\MainMenuState</Filter>
+    </ClInclude>
+    <ClInclude Include="Button.h">
+      <Filter>Classes\Ressources files\Button</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
