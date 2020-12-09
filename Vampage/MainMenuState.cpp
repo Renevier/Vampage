@@ -8,7 +8,7 @@ void MainMenuState::InitBackground()
 {
 	this->background.setSize(Vector2f((float)this->window->getSize().x, (float)this->window->getSize().y));
 
-	if (!this->backgroundTexture.loadFromFile("../Ressources/Background/backgound_menu.png"))
+	if (!this->backgroundTexture.loadFromFile("../Resources/Backgrounds/bakcground_menu_Vampage.png"))
 		exit(0);
 
 	this->background.setTexture(&this->backgroundTexture);
@@ -16,17 +16,21 @@ void MainMenuState::InitBackground()
 
 void MainMenuState::InitFont()
 {
-	if (!this->font.loadFromFile("../Ressources/Font/rpgFont.ttf"))
+	if (!this->font.loadFromFile("../Resources/Fonts/BLOODY.ttf"))
 		exit(0);
 }
 
 void MainMenuState::InitButton()
 {
-	this->buttons.emplace("NEW_GAME", new Button(100, 420, 250, 50,
-		&this->font, "New game", Color::White, Color::Green, Color::Red));
+	this->buttons.emplace("NEW_GAME", new Button(100, 500, 250, 50,
+		&this->font, "New game", 50,
+		Color(255, 0, 0, 200), Color(250, 250, 250, 250), Color(20, 20, 20, 50),
+		Color(70, 70, 70, 0), Color(250, 250, 250, 0), Color(20, 20, 20, 0)));
 
 	this->buttons.emplace("EXIT", new Button(100, 700, 250, 50,
-		&this->font, "Quit", Color::White, Color::Green, Color::Red));
+		&this->font, "Quit", 50,
+		Color(255, 0, 0, 200), Color(250, 250, 250, 250), Color(20, 20, 20, 50),
+		Color(70, 70, 70, 0), Color(250, 250, 250, 0), Color(20, 20, 20, 0)));
 
 }
 
@@ -66,7 +70,7 @@ void MainMenuState::Update(const float& _dt)
 void MainMenuState::RenderButton(RenderTarget* _target)
 {
 	for (auto it : this->buttons)
-		it.second->Render(_target);
+		it.second->Render(*_target);
 }
 
 void MainMenuState::Render(RenderTarget* _target)

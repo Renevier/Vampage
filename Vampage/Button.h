@@ -17,18 +17,26 @@ protected:
 	Font* font;
 	Text text;
 
-	Color idleColor;
-	Color hoverColor;
-	Color activeColor;
+	Color textIdleColor;
+	Color textHoverColor;
+	Color textActiveColor;
+
+	Color buttonIdleColor;
+	Color buttonHoverColor;
+	Color buttonActiveColor;
 
 private:
 
 public:
-	Button(float _x, float _y, float _width, float _height, Font* font, string text, Color _idleColor, Color _hoverColor, Color _activeColor);
-	void Update(const Vector2f _mousePos);
-	void Render(RenderTarget* target);
+	Button(float _x, float _y, float _width, float _height,
+		Font* font, string text, unsigned _charactere_size,
+		Color _text_idle_color, Color _text_hover_color, Color _text_active_color,
+		Color _button_idle_color, Color _button_hover_color, Color _button_active_color);
+	void Update(const Vector2f& _mousePos);
+	void Render(RenderTarget& target);
 	bool IsPressed() const;
 	~Button();
 
-
+	//get
+	BTN_STATES GetState();
 };
