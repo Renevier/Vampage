@@ -1,15 +1,17 @@
+#include "pch.h"
 #include "State.h"
 
 void State::InitView()
 {
-	this->view.setSize(this->window->getSize().x, this->window->getSize().y);
-	this->view.setCenter(this->window->getSize().x / 2.f, this->window->getSize().y / 2.f);
+	this->view.setSize(static_cast<float>(this->window->getSize().x),
+		static_cast<float>(this->window->getSize().y));
+	this->view.setCenter(static_cast<float>(this->window->getSize().x / 2.f),
+		static_cast<float>(this->window->getSize().y / 2.f));
 }
 
-State::State(RenderWindow* _window, map<string, int>* _supportedKeys, stack<State*>* _states)
+State::State(RenderWindow* _window, stack<State*>* _states)
 {
 	this->window = _window;
-	this->supportedKeys = _supportedKeys;
 	this->states = _states;
 
 	this->Quit = false;

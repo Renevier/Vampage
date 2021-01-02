@@ -1,8 +1,6 @@
+#include "pch.h"
 #include "MainMenuState.h"
 
-void MainMenuState::InitKeybinds()
-{
-}
 
 void MainMenuState::InitBackground()
 {
@@ -34,8 +32,8 @@ void MainMenuState::InitButton()
 
 }
 
-MainMenuState::MainMenuState(RenderWindow* _window, map<string, int>* _supportedKeys, stack<State*>* _states)
-	: State(_window, _supportedKeys, _states)
+MainMenuState::MainMenuState(RenderWindow* _window, stack<State*>* _states)
+	: State(_window, _states)
 {
 	this->InitBackground();
 	this->InitFont();
@@ -52,7 +50,7 @@ void MainMenuState::UpdateButton()
 		it.second->Update(this->mousePosView);
 
 	if (this->buttons.at("NEW_GAME")->IsPressed())
-		this->states->push(new GameState(this->window, this->supportedKeys, this->states));
+		this->states->push(new GameState(this->window, this->states));
 
 	//if (this->buttons.at("LOAD_GAME")->IsPressed())
 

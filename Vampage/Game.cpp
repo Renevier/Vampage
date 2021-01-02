@@ -1,5 +1,5 @@
+#include "pch.h"
 #include "Game.h"
-#include "MainMenuState.h"
 
 void Game::InitWindow()
 {
@@ -9,25 +9,25 @@ void Game::InitWindow()
 
 void Game::InitState()
 {
-	this->states.emplace(new MainMenuState(this->window, &this->supportedKeys, &this->states));
-}
-
-void Game::InitKeys()
-{
-	this->supportedKeys.emplace("Escape", Keyboard::Key::Escape);
-	this->supportedKeys.emplace("Up", Keyboard::Key::Up);
-	this->supportedKeys.emplace("Left", Keyboard::Key::Left);
-	this->supportedKeys.emplace("Right", Keyboard::Key::Right);
-	this->supportedKeys.emplace("Down", Keyboard::Key::Down);
+	this->states.emplace(new MainMenuState(this->window, &this->states));
 }
 
 Game::Game()
 {
 	this->InitWindow();
-	this->InitKeys();
 	this->InitState();
 }
 
+Game::~Game()
+{
+	delete this->window;
+
+	while (!this->states.empty())
+	{
+		delete this->states.top();
+		this->states.pop();
+	}
+}
 
 void Game::Run()
 {
@@ -83,15 +83,4 @@ void Game::Render()
 		this->states.top()->Render(this->window);
 
 	this->window->display();
-}
-
-Game::~Game()
-{
-	delete this->window;
-
-	while (!this->states.empty())
-	{
-		delete this->states.top();
-		this->states.pop();
-	}
 }

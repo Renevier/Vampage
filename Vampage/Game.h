@@ -1,6 +1,7 @@
 #pragma once
-#include "State.h"
-#include "pch.h"
+#include "GameState.h"
+#include "MainMenuState.h"
+
 
 class Game
 {
@@ -13,19 +14,18 @@ private:
 
 	stack<State*> states;
 
-	map<string, int> supportedKeys;
 
 private:
 	void InitWindow();
-	void InitKeys();
 	void InitState();
 
 public:
 	Game();
+	~Game();
+
 	void Run();
 	void Update();
 	void UpdateEventSFML();
 	void UpdateDt();
 	void Render();
-	~Game();
 };

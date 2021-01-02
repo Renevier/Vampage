@@ -1,13 +1,10 @@
 #pragma once
-#include "pch.h"
 
 class State
 {
 protected:
 	stack<State*>* states;
 	RenderWindow* window;
-	map<string, int>* supportedKeys;
-	map<string, int> keybinds;
 
 	bool Quit;
 	bool pause;
@@ -20,11 +17,10 @@ protected:
 	float viewSpeed;
 
 private:
-	virtual void InitKeybinds() = 0;
 	virtual void InitView();
 
 public:
-	State(RenderWindow* _window, map<string, int>* _supportedKeys, stack<State*>* _states);
+	State(RenderWindow* _window, stack<State*>* _states);
 	virtual void UpdateMousePosition();
 	virtual void UpdateInput(const float& _dt) = 0;
 	virtual void Update(const float& _dt) = 0;
