@@ -1,9 +1,19 @@
 #pragma once
 #include "State.h"
+#include "Player.h"
 class GameState :
     public State
 {
 private:
+    View view;
+    RenderTexture renderTexture;
+    Sprite renderSprite;
+
+    Player* player;
+
+private:
+    void InitTexture();
+    void InitPlayer();
 
 public:
     GameState(RenderWindow* _window, stack<State*>* _states);

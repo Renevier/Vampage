@@ -16,6 +16,8 @@ protected:
 	View view;
 	float viewSpeed;
 
+	map<string, Texture> textures;
+
 private:
 	virtual void InitView();
 
