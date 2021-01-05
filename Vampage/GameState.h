@@ -1,29 +1,34 @@
 #pragma once
 #include "State.h"
-#include "Player.h"
+#include "Enemy.h"
 class GameState :
     public State
 {
 private:
-    View view;
-    RenderTexture renderTexture;
-    Sprite renderSprite;
+    int points;
+    float enemySpawnTimer;
+    float enemySpawnTimerMax;
+    int maxEnemies;
 
-    Player* player;
+    vector<Enemy*> enemies;
+    Enemy* enemy;
 
 private:
     void InitTexture();
-    void InitPlayer();
+    void InitEnemies();
+    void InitVariables();
 
 public:
     GameState(RenderWindow* _window, stack<State*>* _states);
-    virtual void UpdateInput(const float& _dt);
-    virtual void Update(const float& _dt);
-    virtual void Render(RenderTarget* _target);
-    void UpdateState();
-    virtual void EndState();
-    void CheckForPause();
-    void PauseMenu();
     ~GameState();
+
+    void SpawnEnemy();
+    virtual void UpdateInput(const float& _dt);
+    void UpdateEnemies();
+    virtual void Update(const float& _dt);
+    virtual void EndState();
+    void PauseMenu();
+    void RenderEnemies(RenderTarget* _target);
+    virtual void Render(RenderTarget* _target);
 };
 

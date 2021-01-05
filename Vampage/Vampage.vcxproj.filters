@@ -28,12 +28,6 @@
     <Filter Include="Classes\States\MainMenuState">
       <UniqueIdentifier>{70dcb54f-e46c-4c86-bb1f-bb0f13b7e473}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Classes\Ressources files">
-      <UniqueIdentifier>{435315f8-29b6-4268-82b3-1e14109fa395}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Classes\Ressources files\Button">
-      <UniqueIdentifier>{d1dc0e7f-a596-4d61-9f74-906a0b6620e4}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Classes\Entity">
       <UniqueIdentifier>{793d9097-d318-4b3a-8022-913f660bfc45}</UniqueIdentifier>
     </Filter>
@@ -43,14 +37,20 @@
     <Filter Include="Classes\Entity\Character\Player">
       <UniqueIdentifier>{cd159620-f32b-41dc-8c59-8025ce134b04}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Classes\Entity\Character\NPC">
-      <UniqueIdentifier>{88a15244-a5e5-48bf-81db-d2a7b3d49884}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Classes\Component">
       <UniqueIdentifier>{a23aec5f-989e-44f9-9783-a09983c3b8d5}</UniqueIdentifier>
     </Filter>
     <Filter Include="Classes\Animation">
       <UniqueIdentifier>{864ac26b-b3db-44bd-8fc6-f2643d70ce8d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes\GUI">
+      <UniqueIdentifier>{435315f8-29b6-4268-82b3-1e14109fa395}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes\GUI\Button">
+      <UniqueIdentifier>{d1dc0e7f-a596-4d61-9f74-906a0b6620e4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes\Entity\Character\Enemy">
+      <UniqueIdentifier>{88a15244-a5e5-48bf-81db-d2a7b3d49884}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -70,7 +70,7 @@
       <Filter>Classes\States\MainMenuState</Filter>
     </ClCompile>
     <ClCompile Include="Button.cpp">
-      <Filter>Classes\Ressources files\Button</Filter>
+      <Filter>Classes\GUI\Button</Filter>
     </ClCompile>
     <ClCompile Include="pch.cpp">
       <Filter>Fichiers sources</Filter>
@@ -84,9 +84,6 @@
     <ClCompile Include="Player.cpp">
       <Filter>Classes\Entity\Character\Player</Filter>
     </ClCompile>
-    <ClCompile Include="NPC.cpp">
-      <Filter>Classes\Entity\Character\NPC</Filter>
-    </ClCompile>
     <ClCompile Include="MovementComponent.cpp">
       <Filter>Classes\Component</Filter>
     </ClCompile>
@@ -98,6 +95,9 @@
     </ClCompile>
     <ClCompile Include="AnimationComponent.cpp">
       <Filter>Classes\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy.cpp">
+      <Filter>Classes\Entity\Character\Enemy</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -117,7 +117,7 @@
       <Filter>Classes\States\MainMenuState</Filter>
     </ClInclude>
     <ClInclude Include="Button.h">
-      <Filter>Classes\Ressources files\Button</Filter>
+      <Filter>Classes\GUI\Button</Filter>
     </ClInclude>
     <ClInclude Include="Entity.h">
       <Filter>Classes\Entity</Filter>
@@ -127,9 +127,6 @@
     </ClInclude>
     <ClInclude Include="Player.h">
       <Filter>Classes\Entity\Character\Player</Filter>
-    </ClInclude>
-    <ClInclude Include="NPC.h">
-      <Filter>Classes\Entity\Character\NPC</Filter>
     </ClInclude>
     <ClInclude Include="MovementComponent.h">
       <Filter>Classes\Component</Filter>
@@ -142,6 +139,9 @@
     </ClInclude>
     <ClInclude Include="AnimationComponent.h">
       <Filter>Classes\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy.h">
+      <Filter>Classes\Entity\Character\Enemy</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

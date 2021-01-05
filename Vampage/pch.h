@@ -5,6 +5,7 @@
 #include <stack>
 #include <map>
 #include <string>
+#include <ctime>
 
 #include "SFML/System.hpp"
 #include "SFML/Window.hpp"

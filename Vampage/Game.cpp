@@ -4,6 +4,8 @@
 void Game::InitWindow()
 {
 	this->window = new RenderWindow(VideoMode(1920, 1080), "Yardebeul of Gardebeul");
+
+	this->window->setFramerateLimit(60);
 }
 
 
