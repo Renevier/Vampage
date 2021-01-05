@@ -7,10 +7,10 @@ protected:
     RectangleShape shape;
 
 protected:
-    void InitComponent();
+    void InitComponent(RenderWindow* _window);
 
 public:
-    Enemy();
+    Enemy(RenderWindow* _window);
     ~Enemy();
 
     void Move(float _x, float _y);
@@ -18,7 +18,6 @@ public:
     void Draw(RenderTarget& _target);
 
     //Set
-
-    inline void SetFillColor(Color _color) { this->shape.setFillColor(_color); }
+    inline Vector2f GetPosition() { return this->shape.getPosition(); }
 };
 

@@ -1,18 +1,21 @@
 #include "pch.h"
 #include "Enemy.h"
 
-void Enemy::InitComponent()
+void Enemy::InitComponent(RenderWindow* _window)
 {
-	//this->shape.setPosition(10.f, 10.f);
+	this->shape.setFillColor(Color::Green);
+
+	this->shape.setPosition(
+		static_cast<float>(rand() % static_cast<int>(_window->getSize().x - this->shape.getSize().x)),
+		0.f
+	);
+
 	this->shape.setSize(Vector2f(100.f, 100.f));
-	this->shape.setFillColor(Color::Cyan);
-	this->shape.setOutlineColor(Color::Green);
-	this->shape.setOutlineThickness(1.f);
 }
 
-Enemy::Enemy()
+Enemy::Enemy(RenderWindow* _window)
 {
-	this->InitComponent();
+	this->InitComponent(_window);
 }
 
 Enemy::~Enemy()

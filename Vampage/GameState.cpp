@@ -6,15 +6,10 @@ void GameState::InitTexture()
 	
 }
 
-void GameState::InitEnemies()
-{
-	this->enemy = new Enemy();
-}
-
 void GameState::InitVariables()
 {
 	this->points = 0;
-	this->enemySpawnTimerMax = 1000.f;
+	this->enemySpawnTimerMax = 10.f;
 	this->enemySpawnTimer = this->enemySpawnTimerMax;
 	this->maxEnemies = 5;
 }
@@ -24,25 +19,16 @@ GameState::GameState(RenderWindow* _window, stack<State*>* _states)
 {
 	this->InitVariables();
 	this->InitTexture();
-	this->InitEnemies();
 }
  
 GameState::~GameState()
 {
-	delete this->enemy;
 }
 
 
 void GameState::SpawnEnemy()
 {
-	this->enemy->SetPosition(
-		static_cast<float>(rand() % static_cast<int>(this->window->getSize().x - this->enemy->GetGlobalBounds().width)),
-		static_cast<float>(rand() % static_cast<int>(this->window->getSize().y - this->enemy->GetGlobalBounds().height))
-	);
-
-	this->enemy->SetFillColor(Color::Green);
-
-	this->enemies.push_back(this->enemy);
+	this->enemies.push_back(new Enemy(this->window));
 }
 
 void GameState::UpdateInput(const float& _dt)
@@ -62,10 +48,16 @@ void GameState::UpdateEnemies()
 			this->enemySpawnTimer += 1.f;
 	}
 
-	//Move the enemies
-	for (auto& e : this->enemies)
+	for (int i = 0; i < this->enemies.size(); i++)
 	{
-		e->Move(0.f, .5f);
+		this->enemies[i]->Move(0.f, 10.f);
+
+		//Check if the enemy is past the bottom of the screen
+		if (this->enemies[i]->GetPosition().y > this->window->getSize().y)
+		{
+			this->enemies.erase(this->enemies.begin() + i);
+
+		}
 	}
 }
 
@@ -87,9 +79,9 @@ void GameState::PauseMenu()
 
 void GameState::RenderEnemies(RenderTarget* _target)
 {
-	for (auto& e : this->enemies)
+	for (int i = 0; i < this->enemies.size(); i++)
 	{
-		e->Draw(*_target);
+		this->enemies[i]->Draw(*_target);
 	}
 }
 

@@ -15,7 +15,6 @@ private:
 
 private:
     void InitTexture();
-    void InitEnemies();
     void InitVariables();
 
 public:
