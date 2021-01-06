@@ -6,7 +6,7 @@ void Enemy::InitComponent(RenderWindow* _window)
 	this->shape.setFillColor(Color::Green);
 
 	this->shape.setPosition(
-		static_cast<float>(rand() % static_cast<int>(_window->getSize().x - this->shape.getSize().x)),
+		static_cast<float>(rand() % static_cast<int>(_window->getSize().x - this->shape.getGlobalBounds().width)),
 		0.f
 	);
 

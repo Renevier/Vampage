@@ -11,7 +11,7 @@ void GameState::InitVariables()
 	this->points = 0;
 	this->enemySpawnTimerMax = 10.f;
 	this->enemySpawnTimer = this->enemySpawnTimerMax;
-	this->maxEnemies = 5;
+	this->maxEnemies = 20;
 }
 
 GameState::GameState(RenderWindow* _window, stack<State*>* _states)
