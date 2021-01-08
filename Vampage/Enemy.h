@@ -17,7 +17,8 @@ public:
     void Update();
     void Draw(RenderTarget& _target);
 
-    //Set
+    //Get
     inline Vector2f GetPosition() { return this->shape.getPosition(); }
+    inline FloatRect getGlobalBound() { return this->shape.getGlobalBounds(); }
 };
 

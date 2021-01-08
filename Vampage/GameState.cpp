@@ -11,7 +11,7 @@ void GameState::InitVariables()
 	this->points = 0;
 	this->enemySpawnTimerMax = 10.f;
 	this->enemySpawnTimer = this->enemySpawnTimerMax;
-	this->maxEnemies = 20;
+	this->maxEnemies = 5;
 }
 
 GameState::GameState(RenderWindow* _window, stack<State*>* _states)
@@ -37,6 +37,8 @@ void GameState::UpdateInput(const float& _dt)
 
 void GameState::UpdateEnemies()
 {
+	
+
 	if (this->enemies.size() < this->maxEnemies)
 	{
 		if (this->enemySpawnTimer >= this->enemySpawnTimerMax)
@@ -50,14 +52,22 @@ void GameState::UpdateEnemies()
 
 	for (int i = 0; i < this->enemies.size(); i++)
 	{
-		this->enemies[i]->Move(0.f, 10.f);
+		bool deleted = false;
+
+		this->enemies[i]->Move(0.f, 5.f);
+
+		if (Mouse::isButtonPressed(Mouse::Left))
+		{
+			if (this->enemies[i]->getGlobalBound().contains(this->mousePosView))
+				deleted = true;
+		}
 
 		//Check if the enemy is past the bottom of the screen
 		if (this->enemies[i]->GetPosition().y > this->window->getSize().y)
-		{
-			this->enemies.erase(this->enemies.begin() + i);
+			deleted = true;
 
-		}
+		if(deleted)
+			this->enemies.erase(this->enemies.begin() + i);
 	}
 }
 
