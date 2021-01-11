@@ -1,6 +1,11 @@
 #include "pch.h"
 #include "GameState.h"
 
+void GameState::InitPlayer()
+{
+	this->player = new Player(this->window->getSize().x / 2, this->window->getSize().y / 2);
+}
+
 void GameState::InitTexture()
 {
 	
@@ -11,7 +16,7 @@ void GameState::InitVariables()
 	this->points = 0;
 	this->enemySpawnTimerMax = 10.f;
 	this->enemySpawnTimer = this->enemySpawnTimerMax;
-	this->maxEnemies = 5;
+	this->maxEnemies = 15;
 }
 
 GameState::GameState(RenderWindow* _window, stack<State*>* _states)
@@ -19,6 +24,7 @@ GameState::GameState(RenderWindow* _window, stack<State*>* _states)
 {
 	this->InitVariables();
 	this->InitTexture();
+	this->InitPlayer();
 }
  
 GameState::~GameState()
@@ -28,7 +34,10 @@ GameState::~GameState()
 
 void GameState::SpawnEnemy()
 {
-	this->enemies.push_back(new Enemy(this->window));
+	float posX = static_cast<float>(rand() % static_cast<int>(this->window->getSize().x));
+	float posY = static_cast<float>(rand() % static_cast<int>(this->window->getSize().y));
+
+	this->enemies.push_back(new Enemy(posX, posY));
 }
 
 void GameState::UpdateInput(const float& _dt)
@@ -37,8 +46,6 @@ void GameState::UpdateInput(const float& _dt)
 
 void GameState::UpdateEnemies()
 {
-	
-
 	if (this->enemies.size() < this->maxEnemies)
 	{
 		if (this->enemySpawnTimer >= this->enemySpawnTimerMax)
@@ -52,22 +59,8 @@ void GameState::UpdateEnemies()
 
 	for (int i = 0; i < this->enemies.size(); i++)
 	{
-		bool deleted = false;
-
-		this->enemies[i]->Move(0.f, 5.f);
-
-		if (Mouse::isButtonPressed(Mouse::Left))
-		{
-			if (this->enemies[i]->getGlobalBound().contains(this->mousePosView))
-				deleted = true;
-		}
-
-		//Check if the enemy is past the bottom of the screen
-		if (this->enemies[i]->GetPosition().y > this->window->getSize().y)
-			deleted = true;
-
-		if(deleted)
-			this->enemies.erase(this->enemies.begin() + i);
+		//delete enemies
+		//this->enemies.erase(this->enemies.begin() + i);
 	}
 }
 
@@ -95,10 +88,16 @@ void GameState::RenderEnemies(RenderTarget* _target)
 	}
 }
 
+void GameState::RenderPlayer(RenderTarget* _target)
+{
+	this->player->Draw(*_target);
+}
+
 void GameState::Render(RenderTarget* _target)
 {
 	if (!_target)
 		_target = this->window;
 
-	this->RenderEnemies(_target);
+	this->RenderPlayer(_target);
+	//this->RenderEnemies(_target);
 }

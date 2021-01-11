@@ -5,14 +5,16 @@ class Player
 	:public Character
 {
 private:
+	CircleShape noSpawnArea;
 
 private:
-	void InitComponent(float _x, float _y, Texture& _texture_sheet);
+	virtual void InitShape();
+	void InitNoSpawnAera();
 
 public:
-	Player(float _x, float _y, Texture& _texture);
+	Player(float _x, float _y);
 	~Player();
 
-
+	void Draw(RenderTarget& _target);
 };
 

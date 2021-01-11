@@ -1,22 +1,36 @@
 #include "pch.h"
 #include "Player.h"
 
-void Player::InitComponent(float _x, float _y, Texture& _texture_sheet)
+void Player::InitShape()
 {
-	this->position.x = _x;
-	this->position.y = _y;
-
-	this->SetPosition(this->position.x, this->position.y);
-
-	this->CreateMovementComponent(300.f, 1500.f, 500.f);
-	this->CreateAnimationComponent(_texture_sheet);
-	this->CreateHitBoxComponent(this->sprite, -5.f, 0.f, 35.f, 35.f);
+	this->shape.setSize(Vector2f(50, 50));
+	this->shape.setFillColor(Color::Blue);
+	this->shape.setOrigin(Vector2f(this->shape.getGlobalBounds().width / 2, this->shape.getGlobalBounds().height / 2));
 }
 
-Player::Player(float _x, float _y, Texture& _texture)
+void Player::InitNoSpawnAera()
 {
+	this->noSpawnArea.setPosition(this->shape.getOrigin());
+	this->noSpawnArea.setRadius(10.f);
+	this->noSpawnArea.setFillColor(Color::Transparent);
+	this->noSpawnArea.setOutlineThickness(1.f);
+	this->noSpawnArea.setOutlineColor(Color::Green);
+}
+
+Player::Player(float _x, float _y)
+{
+	this->InitShape();
+	this->InitPosition(_x, _y);
+	this->InitNoSpawnAera();
 }
 
 Player::~Player()
 {
+}
+
+void Player::Draw(RenderTarget& _target)
+{
+	Entity::Draw(_target);
+
+	_target.draw(this->noSpawnArea);
 }

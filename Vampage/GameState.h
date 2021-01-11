@@ -1,5 +1,6 @@
 #pragma once
 #include "State.h"
+#include "Player.h"
 #include "Enemy.h"
 class GameState :
     public State
@@ -10,10 +11,11 @@ private:
     float enemySpawnTimerMax;
     int maxEnemies;
 
+    Player* player;
     vector<Enemy*> enemies;
-    Enemy* enemy;
 
 private:
+    void InitPlayer();
     void InitTexture();
     void InitVariables();
 
@@ -27,7 +29,9 @@ public:
     virtual void Update(const float& _dt);
     virtual void EndState();
     void PauseMenu();
+
     void RenderEnemies(RenderTarget* _target);
+    void RenderPlayer(RenderTarget* _target);
     virtual void Render(RenderTarget* _target);
 };
 
