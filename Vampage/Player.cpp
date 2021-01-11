@@ -10,9 +10,11 @@ void Player::InitShape()
 
 void Player::InitNoSpawnAera()
 {
-	this->noSpawnArea.setPosition(this->shape.getOrigin());
-	this->noSpawnArea.setRadius(10.f);
+	this->noSpawnArea.setRadius(200.f);
+	this->noSpawnArea.setOrigin(this->noSpawnArea.getRadius(), this->noSpawnArea.getRadius());
 	this->noSpawnArea.setFillColor(Color::Transparent);
+	this->noSpawnArea.setPosition(this->shape.getPosition());
+
 	this->noSpawnArea.setOutlineThickness(1.f);
 	this->noSpawnArea.setOutlineColor(Color::Green);
 }
@@ -33,4 +35,5 @@ void Player::Draw(RenderTarget& _target)
 	Entity::Draw(_target);
 
 	_target.draw(this->noSpawnArea);
+
 }

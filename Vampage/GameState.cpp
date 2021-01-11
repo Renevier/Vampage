@@ -8,7 +8,7 @@ void GameState::InitPlayer()
 
 void GameState::InitTexture()
 {
-	
+
 }
 
 void GameState::InitVariables()
@@ -26,9 +26,10 @@ GameState::GameState(RenderWindow* _window, stack<State*>* _states)
 	this->InitTexture();
 	this->InitPlayer();
 }
- 
+
 GameState::~GameState()
 {
+	delete this->player;
 }
 
 
@@ -37,7 +38,10 @@ void GameState::SpawnEnemy()
 	float posX = static_cast<float>(rand() % static_cast<int>(this->window->getSize().x));
 	float posY = static_cast<float>(rand() % static_cast<int>(this->window->getSize().y));
 
-	this->enemies.push_back(new Enemy(posX, posY));
+	if (!this->player->GetNoSpawnArea().getGlobalBounds().contains(Vector2f(posX, posY)))
+	{
+		this->enemies.push_back(new Enemy(posX, posY));
+	}
 }
 
 void GameState::UpdateInput(const float& _dt)
@@ -99,5 +103,5 @@ void GameState::Render(RenderTarget* _target)
 		_target = this->window;
 
 	this->RenderPlayer(_target);
-	//this->RenderEnemies(_target);
+	this->RenderEnemies(_target);
 }

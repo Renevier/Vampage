@@ -52,8 +52,6 @@ void MainMenuState::UpdateButton()
 	if (this->buttons.at("NEW_GAME")->IsPressed())
 		this->states->push(new GameState(this->window, this->states));
 
-	//if (this->buttons.at("LOAD_GAME")->IsPressed())
-
 	if (this->buttons.at("EXIT")->IsPressed())
 		this->Quit = true;
 }

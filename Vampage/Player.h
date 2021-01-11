@@ -16,5 +16,7 @@ public:
 	~Player();
 
 	void Draw(RenderTarget& _target);
+
+	inline CircleShape GetNoSpawnArea() { return this->noSpawnArea; }
 };
 
