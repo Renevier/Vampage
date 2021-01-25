@@ -19,11 +19,20 @@ void Player::InitNoSpawnAera()
 	this->noSpawnArea.setOutlineColor(Color::Green);
 }
 
+void Player::InitRayCast()
+{
+	this->line[0].position = Vector2f(this->shape.getPosition().x, this->shape.getPosition().y);
+	this->line[0].color = Color::Red;
+	this->line[1].position = Vector2f(this->shape.getPosition().x + 50, this->shape.getPosition().y);
+	this->line[1].color = Color::Red;
+}
+
 Player::Player(float _x, float _y)
 {
 	this->InitShape();
 	this->InitPosition(_x, _y);
 	this->InitNoSpawnAera();
+	this->InitRayCast();
 }
 
 Player::~Player()
@@ -35,5 +44,6 @@ void Player::Draw(RenderTarget& _target)
 	Entity::Draw(_target);
 
 	_target.draw(this->noSpawnArea);
+	_target.draw(this->line, 2, Lines);
 
 }

@@ -6,10 +6,12 @@ class Player
 {
 private:
 	CircleShape noSpawnArea;
+	Vertex line[2];
 
 private:
 	virtual void InitShape();
 	void InitNoSpawnAera();
+	void InitRayCast();
 
 public:
 	Player(float _x, float _y);
@@ -19,4 +21,3 @@ public:
 
 	inline CircleShape GetNoSpawnArea() { return this->noSpawnArea; }
 };
-

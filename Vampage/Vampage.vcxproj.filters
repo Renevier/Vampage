@@ -52,6 +52,9 @@
     <Filter Include="Classes\Entity\Character\Enemy">
       <UniqueIdentifier>{88a15244-a5e5-48bf-81db-d2a7b3d49884}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Classes\Entity\Bullet">
+      <UniqueIdentifier>{201fe9dd-f31c-41b1-aacc-9e84758f3245}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -99,6 +102,9 @@
     <ClCompile Include="Enemy.cpp">
       <Filter>Classes\Entity\Character\Enemy</Filter>
     </ClCompile>
+    <ClCompile Include="Bullet.cpp">
+      <Filter>Classes\Entity\Bullet</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -142,6 +148,9 @@
     </ClInclude>
     <ClInclude Include="Enemy.h">
       <Filter>Classes\Entity\Character\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet.h">
+      <Filter>Classes\Entity\Bullet</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
