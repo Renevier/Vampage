@@ -81,9 +81,6 @@
     <ClCompile Include="Entity.cpp">
       <Filter>Classes\Entity</Filter>
     </ClCompile>
-    <ClCompile Include="Character.cpp">
-      <Filter>Classes\Entity\Character</Filter>
-    </ClCompile>
     <ClCompile Include="Player.cpp">
       <Filter>Classes\Entity\Character\Player</Filter>
     </ClCompile>
@@ -127,9 +124,6 @@
     </ClInclude>
     <ClInclude Include="Entity.h">
       <Filter>Classes\Entity</Filter>
-    </ClInclude>
-    <ClInclude Include="Character.h">
-      <Filter>Classes\Entity\Character</Filter>
     </ClInclude>
     <ClInclude Include="Player.h">
       <Filter>Classes\Entity\Character\Player</Filter>

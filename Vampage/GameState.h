@@ -18,14 +18,16 @@ private:
     void InitPlayer();
     void InitTexture();
     void InitVariables();
+    virtual void InitView();
 
 public:
     GameState(RenderWindow* _window, stack<State*>* _states);
     ~GameState();
 
     void SpawnEnemy();
+    void UpdateView();
     virtual void UpdateInput(const float& _dt);
-    void UpdateEnemies();
+    void UpdateEnemies(const float& _dt);
     virtual void Update(const float& _dt);
     virtual void EndState();
     void PauseMenu();

@@ -14,11 +14,10 @@ protected:
 	Vector2f mousePosView;
 
 	View view;
-	float viewSpeed;
 
 	map<string, Texture> textures;
 
-private:
+protected:
 	virtual void InitView();
 
 public:

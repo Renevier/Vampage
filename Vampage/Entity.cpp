@@ -4,9 +4,12 @@
 void Entity::InitPosition(float _x, float _y)
 {
 	this->shape.setPosition(_x, _y);
+	this->shape.setOrigin(this->shape.getGlobalBounds().width / 2,
+		this->shape.getGlobalBounds().height / 2);
 }
 
-Entity::Entity()
+Entity::Entity():
+	movementSpeed(0.f), velocity(Vector2f(0, 0))
 {
 }
 
@@ -14,17 +17,3 @@ Entity::~Entity()
 {
 	
 }
-
-void Entity::Move()
-{
-}
-
-void Entity::Update()
-{
-}
-
-void Entity::Draw(RenderTarget& _target)
-{
-	_target.draw(this->shape);
-}
-

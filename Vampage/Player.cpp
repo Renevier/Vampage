@@ -19,31 +19,45 @@ void Player::InitNoSpawnAera()
 	this->noSpawnArea.setOutlineColor(Color::Green);
 }
 
-void Player::InitRayCast()
-{
-	this->line[0].position = Vector2f(this->shape.getPosition().x, this->shape.getPosition().y);
-	this->line[0].color = Color::Red;
-	this->line[1].position = Vector2f(this->shape.getPosition().x + 50, this->shape.getPosition().y);
-	this->line[1].color = Color::Red;
-}
-
 Player::Player(float _x, float _y)
 {
 	this->InitShape();
 	this->InitPosition(_x, _y);
 	this->InitNoSpawnAera();
-	this->InitRayCast();
+
+	this->movementSpeed = 200.f;
 }
 
 Player::~Player()
 {
 }
 
+void Player::Move(const float& _dt)
+{
+	if (Keyboard::isKeyPressed(Keyboard::Z))
+		this->shape.move(0, - this->movementSpeed * _dt);
+	if (Keyboard::isKeyPressed(Keyboard::S))
+		this->shape.move(0, this->movementSpeed * _dt);
+	if (Keyboard::isKeyPressed(Keyboard::Q))
+		this->shape.move(- this->movementSpeed * _dt, 0);
+	if (Keyboard::isKeyPressed(Keyboard::D))
+		this->shape.move(this->movementSpeed * _dt, 0);
+}
+
+void Player::Update(const float& _dt)
+{
+	this->Move(_dt);
+	this->UpdateNoSpawnArea();
+}
+
+void Player::UpdateNoSpawnArea()
+{
+	this->noSpawnArea.setPosition(this->shape.getPosition());
+}
+
 void Player::Draw(RenderTarget& _target)
 {
-	Entity::Draw(_target);
-
+	_target.draw(this->shape);
 	_target.draw(this->noSpawnArea);
-	_target.draw(this->line, 2, Lines);
 
 }

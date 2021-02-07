@@ -19,12 +19,23 @@ void GameState::InitVariables()
 	this->maxEnemies = 15;
 }
 
+void GameState::InitView()
+{
+	this->view.setSize(static_cast<float>(this->window->getSize().x),
+		static_cast<float>(this->window->getSize().y));
+	this->view.setCenter(this->player->GetPos().x,
+		this->player->GetPos().y);
+
+	this->window->setView(this->view);
+}
+
 GameState::GameState(RenderWindow* _window, stack<State*>* _states)
 	: State(_window, _states)
 {
 	this->InitVariables();
 	this->InitTexture();
 	this->InitPlayer();
+	this->InitView();
 }
 
 GameState::~GameState()
@@ -40,15 +51,23 @@ void GameState::SpawnEnemy()
 
 	if (!this->player->GetNoSpawnArea().getGlobalBounds().contains(Vector2f(posX, posY)))
 	{
-		this->enemies.push_back(new Enemy(posX, posY));
+		this->enemies.push_back(new Enemy(posX, posY, &this->player->GetPos()));
 	}
+}
+
+void GameState::UpdateView()
+{
+	this->view.setCenter(this->player->GetPos().x,
+		this->player->GetPos().y);
+
+	this->window->setView(this->view);
 }
 
 void GameState::UpdateInput(const float& _dt)
 {
 }
 
-void GameState::UpdateEnemies()
+void GameState::UpdateEnemies(const float& _dt)
 {
 	if (this->enemies.size() < this->maxEnemies)
 	{
@@ -63,17 +82,17 @@ void GameState::UpdateEnemies()
 
 	for (int i = 0; i < this->enemies.size(); i++)
 	{
-		//delete enemies
-		//this->enemies.erase(this->enemies.begin() + i);
+		this->enemies[i]->Update(_dt);
 	}
 }
 
 void GameState::Update(const float& _dt)
 {
-	this->UpdateEnemies();
+	this->UpdateView();
+	this->UpdateEnemies(_dt);
 	this->UpdateMousePosition();
-	this->UpdateInput(_dt);
 
+	this->player->Update(_dt);
 }
 
 void GameState::EndState()
