@@ -1,6 +1,10 @@
 #include "pch.h"
 #include "Entity.h"
 
+void Entity::InitShape()
+{
+}
+
 void Entity::InitPosition(float _x, float _y)
 {
 	this->shape.setPosition(_x, _y);

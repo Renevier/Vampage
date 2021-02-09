@@ -6,6 +6,8 @@
 class Entity
 {
 protected:
+	RenderWindow* window;
+
 	RectangleShape shape;
 	float movementSpeed;
 
@@ -15,7 +17,7 @@ protected:
 	Vector2f direction;
 	Vector2f normailizeDir;
 protected:
-	virtual void InitShape() = 0;
+	virtual void InitShape();
 	void InitPosition(float _x, float _y);
 	
 public:

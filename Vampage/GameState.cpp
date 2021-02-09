@@ -3,7 +3,7 @@
 
 void GameState::InitPlayer()
 {
-	this->player = new Player(this->window->getSize().x / 2, this->window->getSize().y / 2);
+	this->player = new Player(this->window->getSize().x / 2, this->window->getSize().y / 2, this->mousePosView);
 }
 
 void GameState::InitTexture()
@@ -93,6 +93,7 @@ void GameState::Update(const float& _dt)
 	this->UpdateMousePosition();
 
 	this->player->Update(_dt);
+
 }
 
 void GameState::EndState()

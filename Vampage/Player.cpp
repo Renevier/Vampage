@@ -19,13 +19,13 @@ void Player::InitNoSpawnAera()
 	this->noSpawnArea.setOutlineColor(Color::Green);
 }
 
-Player::Player(float _x, float _y)
+Player::Player(float _x, float _y, Vector2f _mousePosView)
 {
 	this->InitShape();
 	this->InitPosition(_x, _y);
 	this->InitNoSpawnAera();
 
-	this->movementSpeed = 200.f;
+	this->movementSpeed = 500.f;
 }
 
 Player::~Player()
@@ -44,9 +44,21 @@ void Player::Move(const float& _dt)
 		this->shape.move(this->movementSpeed * _dt, 0);
 }
 
+void Player::Shoot(const float& _dt)
+{
+	bullets.push_back(make_unique<Bullet>(this->mousePosView,
+		10.f, this->shape.getPosition().x, this->shape.getPosition().y));
+
+	for (int i = 0; i < bullets.size(); i++) {
+		this->bullets[i]->Update(_dt);
+	}
+}
+
 void Player::Update(const float& _dt)
 {
 	this->Move(_dt);
+	this->Shoot(_dt);
+
 	this->UpdateNoSpawnArea();
 }
 
@@ -55,9 +67,16 @@ void Player::UpdateNoSpawnArea()
 	this->noSpawnArea.setPosition(this->shape.getPosition());
 }
 
+void Player::RenderBullets(RenderTarget& _target)
+{
+	for (int i = 0; i < bullets.size(); i++)
+		bullets[i]->Draw(_target);
+}
+
 void Player::Draw(RenderTarget& _target)
 {
 	_target.draw(this->shape);
 	_target.draw(this->noSpawnArea);
 
+	this->RenderBullets(_target);
 }
