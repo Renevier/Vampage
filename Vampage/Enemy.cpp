@@ -13,7 +13,7 @@ Enemy::Enemy(float _x, float _y, const Vector2f* _playerPos)
 	this->InitPosition(_x, _y);
 
 	this->playerPos = _playerPos;
-	this->movementSpeed = 550.f;
+	this->movementSpeed = 150.f;
 }
 
 Enemy::~Enemy()

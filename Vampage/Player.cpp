@@ -19,13 +19,14 @@ void Player::InitNoSpawnAera()
 	this->noSpawnArea.setOutlineColor(Color::Green);
 }
 
-Player::Player(float _x, float _y, Vector2f _mousePosView)
+Player::Player(Vector2f* _mousePosView, float _x, float _y)
 {
 	this->InitShape();
 	this->InitPosition(_x, _y);
 	this->InitNoSpawnAera();
 
 	this->movementSpeed = 500.f;
+	this->mousePosView = _mousePosView;
 }
 
 Player::~Player()
@@ -35,22 +36,32 @@ Player::~Player()
 void Player::Move(const float& _dt)
 {
 	if (Keyboard::isKeyPressed(Keyboard::Z))
-		this->shape.move(0, - this->movementSpeed * _dt);
+		this->shape.move(0, -this->movementSpeed * _dt);
 	if (Keyboard::isKeyPressed(Keyboard::S))
 		this->shape.move(0, this->movementSpeed * _dt);
 	if (Keyboard::isKeyPressed(Keyboard::Q))
-		this->shape.move(- this->movementSpeed * _dt, 0);
+		this->shape.move(-this->movementSpeed * _dt, 0);
 	if (Keyboard::isKeyPressed(Keyboard::D))
 		this->shape.move(this->movementSpeed * _dt, 0);
 }
 
 void Player::Shoot(const float& _dt)
 {
-	bullets.push_back(make_unique<Bullet>(this->mousePosView,
+
+	bullets.push_back(make_unique<Bullet>(*this->mousePosView,
 		10.f, this->shape.getPosition().x, this->shape.getPosition().y));
 
 	for (int i = 0; i < bullets.size(); i++) {
+
 		this->bullets[i]->Update(_dt);
+
+		Vector2f destroyBulletPos = Vector2f(
+			this->bullets[i]->GetPos().x - this->shape.getPosition().x,
+			this->bullets[i]->GetPos().y - this->shape.getPosition().y
+		);
+
+		if (abs(destroyBulletPos.x + destroyBulletPos.y) >= 500.f)
+			this->bullets.erase(this->bullets.begin() + i);
 	}
 }
 
@@ -60,6 +71,7 @@ void Player::Update(const float& _dt)
 	this->Shoot(_dt);
 
 	this->UpdateNoSpawnArea();
+
 }
 
 void Player::UpdateNoSpawnArea()

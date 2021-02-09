@@ -16,19 +16,13 @@ State::State(RenderWindow* _window, stack<State*>* _states)
 
 	this->Quit = false;
 	this->pause = false;
-
-	//this->InitView();
 }
 
 void State::UpdateMousePosition()
 {
 	this->mousePosScreen = Mouse::getPosition();
 	this->mousePosWindow = Mouse::getPosition(*this->window);
-	//this->window->setView(this->view);
 	this->mousePosView = this->window->mapPixelToCoords(mousePosWindow);
-	//this->window->setView(this->window->getDefaultView());
-
-	cout << this->mousePosView.x << " " << this->mousePosView.y << endl;
 }
 
 const bool& State::GetQuit() const

@@ -10,14 +10,14 @@ private:
 
 	vector<unique_ptr<Bullet>> bullets;
 
-	Vector2f mousePosView;
-
+	Vector2f* mousePosView;
+	
 private:
 	virtual void InitShape();
 	void InitNoSpawnAera();
 
 public:
-	Player(float _x, float _y, Vector2f _mousePosView);
+	Player(Vector2f* _mousePosView, float _x, float _y);
 	~Player();
 
 	virtual void Move(const float& _dt);

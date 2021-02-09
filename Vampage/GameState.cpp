@@ -3,7 +3,7 @@
 
 void GameState::InitPlayer()
 {
-	this->player = new Player(this->window->getSize().x / 2, this->window->getSize().y / 2, this->mousePosView);
+	this->player = new Player(&this->mousePosView, this->window->getSize().x / 2, this->window->getSize().y / 2);
 }
 
 void GameState::InitTexture()
