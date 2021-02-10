@@ -27,6 +27,7 @@ public:
     ~GameState();
 
     void SpawnEnemy();
+    void KillEnemy();
     void UpdateView();
     void UpdateSpawnArea();
     virtual void UpdateInput(const float& _dt);

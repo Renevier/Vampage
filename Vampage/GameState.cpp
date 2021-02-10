@@ -67,7 +67,43 @@ void GameState::SpawnEnemy()
 	float posY = static_cast<float>(rand() % static_cast<int>(this->window->getSize().y));
 
 	if (!this->player->GetNoSpawnArea().getGlobalBounds().contains(Vector2f(posX, posY)))
+	{
 		this->enemies.push_back(make_shared<Enemy>(posX, posY, &this->player->GetPos()));
+	}
+}
+
+void GameState::KillEnemy()
+{
+	for (auto it = this->player->GetBullets().begin(); it != this->player->GetBullets().end(); it++)
+	{
+		for (auto it2 = this->enemies.begin(); it2 != this->enemies.end(); it2++)
+		{
+			if ((*it2)->GetBounds().intersects((*it)->GetShape().getGlobalBounds()))
+			{
+				this->enemies.erase(it2);
+
+				if (it2 != enemies.begin())
+					it2--;
+			}
+		}
+	}
+
+	/*for (auto it = enemies.begin(); it != enemies.end(); it++)
+	{
+		for (auto it2 = this->player->GetBullets().begin(); it2 != this->player->GetBullets().end(); it2++)
+		{
+			if ((*it2)->GetBounds().intersects((*it)->GetBounds()))
+			{
+				if (it != enemies.begin())
+				{
+					it = this->enemies.erase(it);
+					it--;
+				}
+				else
+					it = this->enemies.erase(it);
+			}
+		}
+	}*/
 }
 
 void GameState::UpdateView()
@@ -100,29 +136,8 @@ void GameState::UpdateEnemies(const float& _dt)
 			this->enemySpawnTimer += 1.f;
 	}
 
-
-	for (auto it = enemies.begin(); it != enemies.end(); it++)
-	{
-		if ((*it)) {
-			(*it)->Update(_dt);
-
-			for (auto it2 = this->player->GetBullets().begin(); it2 != this->player->GetBullets().end(); it2++)
-			{
-				if ((*it2)) {
-					if ((*it2)->GetBounds().intersects((*it)->GetBounds()))
-					{
-						if (it != enemies.begin())
-						{
-							it = this->enemies.erase(it);
-							it--;
-						}
-						else
-							it = this->enemies.erase(it);
-					}
-				}
-			}
-		}
-	}
+	for (auto i = 0; i < this->enemies.size(); i++)
+		this->enemies.at(i)->Update(_dt);
 }
 
 void GameState::Update(const float& _dt)
@@ -134,6 +149,7 @@ void GameState::Update(const float& _dt)
 	this->UpdateEnemies(_dt);
 	this->player->Update(_dt);
 
+	this->KillEnemy();
 }
 
 void GameState::EndState()
@@ -167,7 +183,7 @@ void GameState::Render(RenderTarget* _target)
 	if (!_target)
 		_target = this->window;
 
-	this->RenderPlayer(_target);
 	this->RenderEnemies(_target);
+	this->RenderPlayer(_target);
 	//this->RenderSpawnArea(_target);
 }

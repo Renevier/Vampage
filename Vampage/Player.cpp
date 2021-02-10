@@ -50,26 +50,23 @@ void Player::Move(const float& _dt)
 void Player::Shoot(const float& _dt)
 {
 	bullets.push_back(make_shared<Bullet>(*this->mousePosView,
-		10.f, this->shape.getPosition().x, this->shape.getPosition().y));
+		this->shape.getPosition().x, this->shape.getPosition().y));
 
-	for (auto it = this->bullets.begin(); it != this->bullets.end(); it++) {
 
-		(*it)->Update(_dt);
+	for (int i = 0; i < this->bullets.size(); i++) {
+		this->bullets[i]->Update(_dt);
 
 		Vector2f destroyBulletPos = Vector2f(
-			(*it)->GetPos().x - this->shape.getPosition().x,
-			(*it)->GetPos().y - this->shape.getPosition().y
+			this->bullets[i]->GetShape().getPosition().x - this->shape.getPosition().x,
+			this->bullets[i]->GetShape().getPosition().y - this->shape.getPosition().y
 		);
 
 		if (abs(destroyBulletPos.x) + abs(destroyBulletPos.y) >= this->shootingLenght)
 		{
-			if (it != this->bullets.begin())
-			{
-				it = this->bullets.erase(it);
-				it--;
-			}
-			else
-				it = this->bullets.erase(it);
+			if (i != 0)
+				i--;
+
+			this->bullets.erase(this->bullets.begin() + i);
 		}
 	}
 }
@@ -80,7 +77,6 @@ void Player::Update(const float& _dt)
 	this->Shoot(_dt);
 
 	this->UpdateNoSpawnArea();
-
 }
 
 void Player::UpdateNoSpawnArea()
@@ -96,8 +92,9 @@ void Player::RenderBullets(RenderTarget& _target)
 
 void Player::Draw(RenderTarget& _target)
 {
-	_target.draw(this->shape);
-	_target.draw(this->noSpawnArea);
-
 	this->RenderBullets(_target);
+
+	_target.draw(this->shape);
+	//_target.draw(this->noSpawnArea);
+
 }
