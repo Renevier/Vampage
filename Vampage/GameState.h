@@ -11,14 +11,16 @@ private:
     float enemySpawnTimerMax;
     int maxEnemies;
 
-    Player* player;
-    vector<Enemy*> enemies;
+    unique_ptr<Player> player;
+    vector<shared_ptr<Enemy>> enemies;
+    CircleShape spawnArea;
 
 private:
     void InitPlayer();
     void InitTexture();
     void InitVariables();
     virtual void InitView();
+    void InitSpawnArea();
 
 public:
     GameState(RenderWindow* _window, stack<State*>* _states);
@@ -26,12 +28,14 @@ public:
 
     void SpawnEnemy();
     void UpdateView();
+    void UpdateSpawnArea();
     virtual void UpdateInput(const float& _dt);
     void UpdateEnemies(const float& _dt);
     virtual void Update(const float& _dt);
     virtual void EndState();
     void PauseMenu();
 
+    void RenderSpawnArea(RenderTarget* _target);
     void RenderEnemies(RenderTarget* _target);
     void RenderPlayer(RenderTarget* _target);
     virtual void Render(RenderTarget* _target);

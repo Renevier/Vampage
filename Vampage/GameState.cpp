@@ -3,7 +3,7 @@
 
 void GameState::InitPlayer()
 {
-	this->player = new Player(&this->mousePosView, this->window->getSize().x / 2, this->window->getSize().y / 2);
+	this->player = make_unique<Player>(&this->mousePosView, this->window->getSize().x / 2, this->window->getSize().y / 2);
 }
 
 void GameState::InitTexture()
@@ -21,12 +21,31 @@ void GameState::InitVariables()
 
 void GameState::InitView()
 {
-	this->view.setSize(static_cast<float>(this->window->getSize().x),
-		static_cast<float>(this->window->getSize().y));
-	this->view.setCenter(this->player->GetPos().x,
-		this->player->GetPos().y);
+	this->view.setSize(
+		static_cast<float>(this->window->getSize().x),
+		static_cast<float>(this->window->getSize().y)
+	);
+
+	this->view.setCenter(
+		this->player->GetPos().x,
+		this->player->GetPos().y
+	);
 
 	this->window->setView(this->view);
+}
+
+void GameState::InitSpawnArea()
+{
+	this->spawnArea.setRadius(1000.f);
+	this->spawnArea.setOrigin(
+		this->spawnArea.getRadius(),
+		this->spawnArea.getRadius()
+	);
+	this->spawnArea.setFillColor(Color::Transparent);
+	this->spawnArea.setPosition(this->view.getCenter());
+
+	this->spawnArea.setOutlineThickness(1.f);
+	this->spawnArea.setOutlineColor(Color::Yellow);
 }
 
 GameState::GameState(RenderWindow* _window, stack<State*>* _states)
@@ -36,12 +55,10 @@ GameState::GameState(RenderWindow* _window, stack<State*>* _states)
 	this->InitTexture();
 	this->InitPlayer();
 	this->InitView();
+	this->InitSpawnArea();
 }
 
-GameState::~GameState()
-{
-	delete this->player;
-}
+GameState::~GameState() {}
 
 
 void GameState::SpawnEnemy()
@@ -50,9 +67,7 @@ void GameState::SpawnEnemy()
 	float posY = static_cast<float>(rand() % static_cast<int>(this->window->getSize().y));
 
 	if (!this->player->GetNoSpawnArea().getGlobalBounds().contains(Vector2f(posX, posY)))
-	{
-		this->enemies.push_back(new Enemy(posX, posY, &this->player->GetPos()));
-	}
+		this->enemies.push_back(make_shared<Enemy>(posX, posY, &this->player->GetPos()));
 }
 
 void GameState::UpdateView()
@@ -61,6 +76,11 @@ void GameState::UpdateView()
 		this->player->GetPos().y);
 
 	this->window->setView(this->view);
+}
+
+void GameState::UpdateSpawnArea()
+{
+	this->spawnArea.setPosition(this->view.getCenter());
 }
 
 void GameState::UpdateInput(const float& _dt)
@@ -80,18 +100,38 @@ void GameState::UpdateEnemies(const float& _dt)
 			this->enemySpawnTimer += 1.f;
 	}
 
-	for (int i = 0; i < this->enemies.size(); i++)
+
+	for (auto it = enemies.begin(); it != enemies.end(); it++)
 	{
-		this->enemies[i]->Update(_dt);
+		if ((*it)) {
+			(*it)->Update(_dt);
+
+			for (auto it2 = this->player->GetBullets().begin(); it2 != this->player->GetBullets().end(); it2++)
+			{
+				if ((*it2)) {
+					if ((*it2)->GetBounds().intersects((*it)->GetBounds()))
+					{
+						if (it != enemies.begin())
+						{
+							it = this->enemies.erase(it);
+							it--;
+						}
+						else
+							it = this->enemies.erase(it);
+					}
+				}
+			}
+		}
 	}
 }
 
 void GameState::Update(const float& _dt)
 {
 	this->UpdateView();
-	this->UpdateEnemies(_dt);
+	this->UpdateSpawnArea();
 	this->UpdateMousePosition();
 
+	this->UpdateEnemies(_dt);
 	this->player->Update(_dt);
 
 }
@@ -102,6 +142,11 @@ void GameState::EndState()
 
 void GameState::PauseMenu()
 {
+}
+
+void GameState::RenderSpawnArea(RenderTarget* _target)
+{
+	_target->draw(this->spawnArea);
 }
 
 void GameState::RenderEnemies(RenderTarget* _target)
@@ -124,4 +169,5 @@ void GameState::Render(RenderTarget* _target)
 
 	this->RenderPlayer(_target);
 	this->RenderEnemies(_target);
+	//this->RenderSpawnArea(_target);
 }

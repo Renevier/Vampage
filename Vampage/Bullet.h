@@ -6,8 +6,8 @@ class Bullet :
 protected:
     RenderWindow* window;
     CircleShape cShape;
-
     Vector2f mousePosView;
+
 
 private:
     void InitShape(float _ray);
@@ -25,5 +25,5 @@ public:
     inline const CircleShape& GetShape() const { return this->cShape; }
     inline const Vector2f& GetPos() const { return this->cShape.getPosition(); }
     inline const Vector2f& GetDist() const { return this->direction; }
+    inline const FloatRect& GetBounds() const { return this->cShape.getGlobalBounds(); }
 };
-

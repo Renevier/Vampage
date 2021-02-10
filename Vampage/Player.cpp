@@ -10,8 +10,9 @@ void Player::InitShape()
 
 void Player::InitNoSpawnAera()
 {
-	this->noSpawnArea.setRadius(200.f);
-	this->noSpawnArea.setOrigin(this->noSpawnArea.getRadius(), this->noSpawnArea.getRadius());
+	this->noSpawnArea.setRadius(500.f);
+	this->noSpawnArea.setOrigin(this->noSpawnArea.getRadius(),
+		this->noSpawnArea.getRadius());
 	this->noSpawnArea.setFillColor(Color::Transparent);
 	this->noSpawnArea.setPosition(this->shape.getPosition());
 
@@ -27,6 +28,7 @@ Player::Player(Vector2f* _mousePosView, float _x, float _y)
 
 	this->movementSpeed = 500.f;
 	this->mousePosView = _mousePosView;
+	this->shootingLenght = 500.f;
 }
 
 Player::~Player()
@@ -47,21 +49,28 @@ void Player::Move(const float& _dt)
 
 void Player::Shoot(const float& _dt)
 {
-
-	bullets.push_back(make_unique<Bullet>(*this->mousePosView,
+	bullets.push_back(make_shared<Bullet>(*this->mousePosView,
 		10.f, this->shape.getPosition().x, this->shape.getPosition().y));
 
-	for (int i = 0; i < bullets.size(); i++) {
+	for (auto it = this->bullets.begin(); it != this->bullets.end(); it++) {
 
-		this->bullets[i]->Update(_dt);
+		(*it)->Update(_dt);
 
 		Vector2f destroyBulletPos = Vector2f(
-			this->bullets[i]->GetPos().x - this->shape.getPosition().x,
-			this->bullets[i]->GetPos().y - this->shape.getPosition().y
+			(*it)->GetPos().x - this->shape.getPosition().x,
+			(*it)->GetPos().y - this->shape.getPosition().y
 		);
 
-		if (abs(destroyBulletPos.x + destroyBulletPos.y) >= 500.f)
-			this->bullets.erase(this->bullets.begin() + i);
+		if (abs(destroyBulletPos.x) + abs(destroyBulletPos.y) >= this->shootingLenght)
+		{
+			if (it != this->bullets.begin())
+			{
+				it = this->bullets.erase(it);
+				it--;
+			}
+			else
+				it = this->bullets.erase(it);
+		}
 	}
 }
 

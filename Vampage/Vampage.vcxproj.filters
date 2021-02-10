@@ -37,12 +37,6 @@
     <Filter Include="Classes\Entity\Character\Player">
       <UniqueIdentifier>{cd159620-f32b-41dc-8c59-8025ce134b04}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Classes\Component">
-      <UniqueIdentifier>{a23aec5f-989e-44f9-9783-a09983c3b8d5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Classes\Animation">
-      <UniqueIdentifier>{864ac26b-b3db-44bd-8fc6-f2643d70ce8d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Classes\GUI">
       <UniqueIdentifier>{435315f8-29b6-4268-82b3-1e14109fa395}</UniqueIdentifier>
     </Filter>
@@ -84,18 +78,6 @@
     <ClCompile Include="Player.cpp">
       <Filter>Classes\Entity\Character\Player</Filter>
     </ClCompile>
-    <ClCompile Include="MovementComponent.cpp">
-      <Filter>Classes\Component</Filter>
-    </ClCompile>
-    <ClCompile Include="HitBoxComponent.cpp">
-      <Filter>Classes\Component</Filter>
-    </ClCompile>
-    <ClCompile Include="Animation.cpp">
-      <Filter>Classes\Animation</Filter>
-    </ClCompile>
-    <ClCompile Include="AnimationComponent.cpp">
-      <Filter>Classes\Component</Filter>
-    </ClCompile>
     <ClCompile Include="Enemy.cpp">
       <Filter>Classes\Entity\Character\Enemy</Filter>
     </ClCompile>
@@ -127,18 +109,6 @@
     </ClInclude>
     <ClInclude Include="Player.h">
       <Filter>Classes\Entity\Character\Player</Filter>
-    </ClInclude>
-    <ClInclude Include="MovementComponent.h">
-      <Filter>Classes\Component</Filter>
-    </ClInclude>
-    <ClInclude Include="HitBoxComponent.h">
-      <Filter>Classes\Component</Filter>
-    </ClInclude>
-    <ClInclude Include="Animation.h">
-      <Filter>Classes\Animation</Filter>
-    </ClInclude>
-    <ClInclude Include="AnimationComponent.h">
-      <Filter>Classes\Component</Filter>
     </ClInclude>
     <ClInclude Include="Enemy.h">
       <Filter>Classes\Entity\Character\Enemy</Filter>

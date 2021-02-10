@@ -17,5 +17,7 @@ public:
 	virtual void Update(const float& _dt);
 
 	virtual void Draw(RenderTarget& _target);
+
+	inline const FloatRect& GetBounds() const { return this->shape.getGlobalBounds(); }
 };
 
