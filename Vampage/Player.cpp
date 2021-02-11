@@ -21,7 +21,7 @@ void Player::InitNoSpawnAera()
 }
 
 Player::Player(Vector2f* _mousePosView, float _x, float _y) :
-	nbDash(2), hasDashed(false)
+	nbDash(2)
 {
 	this->InitShape();
 	this->InitPosition(_x, _y);
@@ -74,14 +74,20 @@ void Player::Move(const float& _dt)
 		this->velocity.y = 0;
 	}
 
-	if (Keyboard::isKeyPressed(Keyboard::Space) && this->nbDash > 0 && this->hasDashed == false)
-	{
-		this->hasDashed = true;
+	this->timeBeetweenDash = this->clockDash.getElapsedTime();
 
-		this->shape.move(this->velocity.x * 100 * _dt, this->velocity.y * 100 * _dt);
+	if (Keyboard::isKeyPressed(Keyboard::Space) && this->nbDash > 0 && this->timeBeetweenDash.asSeconds() >= 2)
+	{
+		this->timeBeetweenDash = this->clockDash.restart();
+		this->shape.move(this->velocity.x * 1000 * _dt, this->velocity.y * 1000 * _dt);
 		this->nbDash--;
 
 		cout << this->nbDash << endl;
+	}
+
+	if (Keyboard::isKeyPressed(Keyboard::Numpad2))
+	{
+		this->nbDash = 10;
 	}
 }
 

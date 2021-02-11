@@ -92,8 +92,6 @@ void GameState::KillEnemy()
 			}
 		}
 	}
-
-
 }
 
 void GameState::UpdateView()
@@ -129,7 +127,6 @@ void GameState::UpdateEnemies(const float& _dt)
 	for (auto i = 0; i < this->enemies.size(); i++)
 		this->enemies.at(i)->Update(_dt);
 
-
 	this->KillEnemy();
 }
 
@@ -141,7 +138,6 @@ void GameState::Update(const float& _dt)
 
 	this->UpdateEnemies(_dt);
 	this->player->Update(_dt);
-
 }
 
 void GameState::EndState()
@@ -159,10 +155,8 @@ void GameState::RenderSpawnArea(RenderTarget* _target)
 
 void GameState::RenderEnemies(RenderTarget* _target)
 {
-	for (int i = 0; i < this->enemies.size(); i++)
-	{
-		this->enemies[i]->Draw(*_target);
-	}
+	for (auto &it : this->enemies)
+		it->Draw(*_target);
 }
 
 void GameState::RenderPlayer(RenderTarget* _target)
@@ -173,9 +167,7 @@ void GameState::RenderPlayer(RenderTarget* _target)
 void GameState::RenderBonus(RenderTarget* _target)
 {
 	for (auto &it: this->bonus)
-	{
 		it->Draw(*_target);
-	}
 }
 
 void GameState::Render(RenderTarget* _target)
@@ -184,7 +176,7 @@ void GameState::Render(RenderTarget* _target)
 		_target = this->window;
 
 	this->RenderPlayer(_target);
-	this->RenderEnemies(_target);
-	//this->RenderSpawnArea(_target);
+	this->RenderSpawnArea(_target);
 	this->RenderBonus(_target);
+	this->RenderEnemies(_target);
 }

@@ -11,8 +11,11 @@ private:
 	Vector2f* mousePosView;
 
 	float shootingLenght;
+
+	Clock clockDash;
+	Time timeBeetweenDash;
+
 	int nbDash;
-	bool hasDashed;
 	
 private:
 	virtual void InitShape();
