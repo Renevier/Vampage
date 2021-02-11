@@ -11,6 +11,8 @@ private:
 	Vector2f* mousePosView;
 
 	float shootingLenght;
+	int nbDash;
+	bool hasDashed;
 	
 private:
 	virtual void InitShape();
@@ -21,6 +23,7 @@ public:
 	~Player();
 
 	virtual void Move(const float& _dt);
+	void Dash(const float& _dt);
 	void Shoot(const float& _dt);
 	void UpdateNoSpawnArea();
 	virtual void Update(const float& _dt);

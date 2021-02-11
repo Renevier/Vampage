@@ -20,7 +20,8 @@ void Player::InitNoSpawnAera()
 	this->noSpawnArea.setOutlineColor(Color::Green);
 }
 
-Player::Player(Vector2f* _mousePosView, float _x, float _y)
+Player::Player(Vector2f* _mousePosView, float _x, float _y) :
+	nbDash(2), hasDashed(false)
 {
 	this->InitShape();
 	this->InitPosition(_x, _y);
@@ -38,13 +39,56 @@ Player::~Player()
 void Player::Move(const float& _dt)
 {
 	if (Keyboard::isKeyPressed(Keyboard::Z))
+	{
+		this->velocity.y = 0.f;
+
 		this->shape.move(0, -this->movementSpeed * _dt);
+		this->velocity.x = 0;
+		this->velocity.y -= this->movementSpeed * _dt;
+	}
+
 	if (Keyboard::isKeyPressed(Keyboard::S))
+	{
+		this->velocity.y = 0.f;
+
 		this->shape.move(0, this->movementSpeed * _dt);
+		this->velocity.x = 0;
+		this->velocity.y += this->movementSpeed * _dt;
+	}
+
 	if (Keyboard::isKeyPressed(Keyboard::Q))
+	{
+		this->velocity.x = 0.f;
+
 		this->shape.move(-this->movementSpeed * _dt, 0);
+		this->velocity.x -= this->movementSpeed * _dt;
+		this->velocity.y = 0;
+	}
+
 	if (Keyboard::isKeyPressed(Keyboard::D))
+	{
+		this->velocity.x = 0.f;
+
 		this->shape.move(this->movementSpeed * _dt, 0);
+		this->velocity.x += this->movementSpeed * _dt;
+		this->velocity.y = 0;
+	}
+
+	if (Keyboard::isKeyPressed(Keyboard::Space) && this->nbDash > 0 && this->hasDashed == false)
+	{
+		this->hasDashed = true;
+
+		this->shape.move(this->velocity.x * 100 * _dt, this->velocity.y * 100 * _dt);
+		this->nbDash--;
+
+		cout << this->nbDash << endl;
+	}
+}
+
+void Player::Dash(const float& _dt)
+{
+	if (Keyboard::isKeyPressed(Keyboard::Space))
+		this->shape.move(this->velocity.x * 2 * _dt, this->velocity.y * 2 * _dt);
 }
 
 void Player::Shoot(const float& _dt)
@@ -75,6 +119,7 @@ void Player::Update(const float& _dt)
 {
 	this->Move(_dt);
 	this->Shoot(_dt);
+	this->Dash(_dt);
 
 	this->UpdateNoSpawnArea();
 }
