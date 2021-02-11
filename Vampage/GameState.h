@@ -2,6 +2,8 @@
 #include "State.h"
 #include "Player.h"
 #include "Enemy.h"
+#include "Bonus.h"
+
 class GameState :
     public State
 {
@@ -13,6 +15,7 @@ private:
 
     unique_ptr<Player> player;
     vector<unique_ptr<Enemy>> enemies;
+    vector<unique_ptr<Bonus>> bonus;
     CircleShape spawnArea;
 
 private:
@@ -26,6 +29,7 @@ public:
     GameState(RenderWindow* _window, stack<State*>* _states);
     ~GameState();
 
+    void DropBonus(float _x, float _y);
     void SpawnEnemy();
     void KillEnemy();
     void UpdateView();
@@ -39,6 +43,7 @@ public:
     void RenderSpawnArea(RenderTarget* _target);
     void RenderEnemies(RenderTarget* _target);
     void RenderPlayer(RenderTarget* _target);
+    void RenderBonus(RenderTarget* _target);
     virtual void Render(RenderTarget* _target);
 };
 

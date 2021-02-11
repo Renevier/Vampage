@@ -49,6 +49,9 @@
     <Filter Include="Classes\Entity\Bullet">
       <UniqueIdentifier>{201fe9dd-f31c-41b1-aacc-9e84758f3245}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Classes\Entity\Bonus">
+      <UniqueIdentifier>{7215bec2-cfc3-4f68-afbe-780ff8ccf231}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -84,6 +87,9 @@
     <ClCompile Include="Bullet.cpp">
       <Filter>Classes\Entity\Bullet</Filter>
     </ClCompile>
+    <ClCompile Include="Bonus.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -115,6 +121,12 @@
     </ClInclude>
     <ClInclude Include="Bullet.h">
       <Filter>Classes\Entity\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Tool.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="Bonus.h">
+      <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -60,6 +60,10 @@ GameState::GameState(RenderWindow* _window, stack<State*>* _states)
 
 GameState::~GameState() {}
 
+void GameState::DropBonus(float _x, float _y)
+{
+	this->bonus.push_back(make_unique<Bonus>(_x, _y));
+}
 
 void GameState::SpawnEnemy()
 {
@@ -78,6 +82,7 @@ void GameState::KillEnemy()
 		{
 			if ((*it)->GetBounds().intersects((*it2)->GetBounds()))
 			{
+				this->DropBonus((*it)->GetShape().getPosition().x, (*it)->GetShape().getPosition().y);
 				it2 = this->enemies.erase(it2);
 
 				if (it2 != this->enemies.begin())
@@ -165,6 +170,14 @@ void GameState::RenderPlayer(RenderTarget* _target)
 	this->player->Draw(*_target);
 }
 
+void GameState::RenderBonus(RenderTarget* _target)
+{
+	for (auto &it: this->bonus)
+	{
+		it->Draw(*_target);
+	}
+}
+
 void GameState::Render(RenderTarget* _target)
 {
 	if (!_target)
@@ -173,4 +186,5 @@ void GameState::Render(RenderTarget* _target)
 	this->RenderPlayer(_target);
 	this->RenderEnemies(_target);
 	//this->RenderSpawnArea(_target);
+	this->RenderBonus(_target);
 }
