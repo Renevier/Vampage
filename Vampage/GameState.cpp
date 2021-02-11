@@ -16,7 +16,7 @@ void GameState::InitVariables()
 	this->points = 0;
 	this->enemySpawnTimerMax = 10.f;
 	this->enemySpawnTimer = this->enemySpawnTimerMax;
-	this->maxEnemies = 15;
+	this->maxEnemies = 30;
 }
 
 void GameState::InitView()
@@ -67,49 +67,28 @@ void GameState::SpawnEnemy()
 	float posY = static_cast<float>(rand() % static_cast<int>(this->window->getSize().y));
 
 	if (!this->player->GetNoSpawnArea().getGlobalBounds().contains(Vector2f(posX, posY)))
-	{
-		this->enemies.push_back(make_shared<Enemy>(posX, posY, &this->player->GetPos()));
-	}
+		this->enemies.push_back(make_unique<Enemy>(posX, posY, &this->player->GetPos()));
 }
 
 void GameState::KillEnemy()
-{
-	//for (size_t i = 0; i < this->player->GetBullets().size(); i++)
-	//{
-	//	for (size_t j = 0; j < this->enemies.size(); j++)
-	//	{
-	//		if (this->enemies[j]->GetBounds().intersects(this->player->GetBullets().at(i)->GetBounds()))
-	//		{
-	//			//this->player->GetBullets().erase(this->player->GetBullets().begin() + i);
-	//			this->enemies.erase(this->enemies.begin() + j);
-
-	//			break;
-	//		}
-	//	}
-	//}
-	auto it = this->player->GetBullets().begin();
-	auto it2 = this->enemies.begin();
-
-	if (/*(*it) &&*/ (&it) != NULL)
+{ 
+	for (auto it = this->player->GetBullets().begin(); it != this->player->GetBullets().end(); it++)
 	{
-		for (it; it != this->player->GetBullets().end() - 1; it++)
+		for (auto it2 = this->enemies.begin(); it2 != enemies.end(); it2++)
 		{
-			if (/*(*it2) && */(&it2) != NULL)
+			if ((*it)->GetBounds().intersects((*it2)->GetBounds()))
 			{
-				for (it2; it2 != enemies.end() - 1; it2++)
-				{
-					if ((*it)->GetBounds().intersects((*it2)->GetBounds()))
-					{
-						if (it2 != this->enemies.begin())
-							it2--;
+				it2 = this->enemies.erase(it2);
 
-						this->enemies.erase(it2);
-					}
-				}
+				if (it2 != this->enemies.begin())
+					it2--;
+
+				break;
 			}
-
 		}
 	}
+
+
 }
 
 void GameState::UpdateView()
@@ -191,7 +170,7 @@ void GameState::Render(RenderTarget* _target)
 	if (!_target)
 		_target = this->window;
 
-	this->RenderEnemies(_target);
 	this->RenderPlayer(_target);
+	this->RenderEnemies(_target);
 	//this->RenderSpawnArea(_target);
 }

@@ -12,7 +12,7 @@ private:
     int maxEnemies;
 
     unique_ptr<Player> player;
-    vector<shared_ptr<Enemy>> enemies;
+    vector<unique_ptr<Enemy>> enemies;
     CircleShape spawnArea;
 
 private:
