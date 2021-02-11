@@ -74,36 +74,42 @@ void GameState::SpawnEnemy()
 
 void GameState::KillEnemy()
 {
-	for (auto it = this->player->GetBullets().begin(); it != this->player->GetBullets().end(); it++)
-	{
-		for (auto it2 = this->enemies.begin(); it2 != this->enemies.end(); it2++)
-		{
-			if ((*it2)->GetBounds().intersects((*it)->GetShape().getGlobalBounds()))
-			{
-				this->enemies.erase(it2);
+	//for (size_t i = 0; i < this->player->GetBullets().size(); i++)
+	//{
+	//	for (size_t j = 0; j < this->enemies.size(); j++)
+	//	{
+	//		if (this->enemies[j]->GetBounds().intersects(this->player->GetBullets().at(i)->GetBounds()))
+	//		{
+	//			//this->player->GetBullets().erase(this->player->GetBullets().begin() + i);
+	//			this->enemies.erase(this->enemies.begin() + j);
 
-				if (it2 != enemies.begin())
-					it2--;
+	//			break;
+	//		}
+	//	}
+	//}
+	auto it = this->player->GetBullets().begin();
+	auto it2 = this->enemies.begin();
+
+	if (/*(*it) &&*/ (&it) != NULL)
+	{
+		for (it; it != this->player->GetBullets().end() - 1; it++)
+		{
+			if (/*(*it2) && */(&it2) != NULL)
+			{
+				for (it2; it2 != enemies.end() - 1; it2++)
+				{
+					if ((*it)->GetBounds().intersects((*it2)->GetBounds()))
+					{
+						if (it2 != this->enemies.begin())
+							it2--;
+
+						this->enemies.erase(it2);
+					}
+				}
 			}
+
 		}
 	}
-
-	/*for (auto it = enemies.begin(); it != enemies.end(); it++)
-	{
-		for (auto it2 = this->player->GetBullets().begin(); it2 != this->player->GetBullets().end(); it2++)
-		{
-			if ((*it2)->GetBounds().intersects((*it)->GetBounds()))
-			{
-				if (it != enemies.begin())
-				{
-					it = this->enemies.erase(it);
-					it--;
-				}
-				else
-					it = this->enemies.erase(it);
-			}
-		}
-	}*/
 }
 
 void GameState::UpdateView()
@@ -138,6 +144,9 @@ void GameState::UpdateEnemies(const float& _dt)
 
 	for (auto i = 0; i < this->enemies.size(); i++)
 		this->enemies.at(i)->Update(_dt);
+
+
+	this->KillEnemy();
 }
 
 void GameState::Update(const float& _dt)
@@ -149,7 +158,6 @@ void GameState::Update(const float& _dt)
 	this->UpdateEnemies(_dt);
 	this->player->Update(_dt);
 
-	this->KillEnemy();
 }
 
 void GameState::EndState()

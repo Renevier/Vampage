@@ -3,7 +3,7 @@
 
 void Bullet::InitShape()
 {
-	this->shape.setSize(Vector2f(5.f, 5.f));
+	this->shape.setSize(Vector2f(10.f, 10.f));
 	this->shape.setFillColor(Color::Green);
 	this->shape.setOrigin(Vector2f(this->shape.getGlobalBounds().width / 2,
 		this->shape.getGlobalBounds().height / 2));

@@ -18,6 +18,7 @@ public:
 
 	virtual void Draw(RenderTarget& _target);
 
+	inline const RectangleShape& GetShape() const { return this->shape; }
 	inline const FloatRect& GetBounds() const { return this->shape.getGlobalBounds(); }
 };
 

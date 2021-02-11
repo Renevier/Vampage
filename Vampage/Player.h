@@ -30,5 +30,5 @@ public:
 
 	inline CircleShape& GetNoSpawnArea() { return this->noSpawnArea; }
 	inline const Vector2f& GetPos() const { return this->shape.getPosition(); }
-	inline const vector<shared_ptr<Bullet>>& GetBullets() const { return this->bullets; }
+	inline vector<shared_ptr<Bullet>>& GetBullets() { return this->bullets; }
 };
