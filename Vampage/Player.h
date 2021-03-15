@@ -16,6 +16,10 @@ private:
 	Time timeBeetweenDash;
 
 	int nbDash;
+
+	float timeBetweenShoot { 0.f };
+
+	unsigned int nbEnnemie{ 0 };
 	
 private:
 	virtual void InitShape();

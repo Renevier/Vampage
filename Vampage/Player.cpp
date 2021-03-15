@@ -10,9 +10,12 @@ void Player::InitShape()
 
 void Player::InitNoSpawnAera()
 {
-	this->noSpawnArea.setRadius(500.f);
-	this->noSpawnArea.setOrigin(this->noSpawnArea.getRadius(),
-		this->noSpawnArea.getRadius());
+	this->noSpawnArea.setRadius(50.f);
+	this->noSpawnArea.setOrigin(
+		this->noSpawnArea.getRadius(),
+		this->noSpawnArea.getRadius()
+	);
+
 	this->noSpawnArea.setFillColor(Color::Transparent);
 	this->noSpawnArea.setPosition(this->shape.getPosition());
 
@@ -136,6 +139,6 @@ void Player::Draw(RenderTarget& _target)
 	this->RenderBullets(_target);
 
 	_target.draw(this->shape);
-	//_target.draw(this->noSpawnArea);
+	_target.draw(this->noSpawnArea);
 
 }
