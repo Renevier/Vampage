@@ -13,7 +13,7 @@ private:
 	float shootingLenght;
 
 	Clock clockDash;
-	Time timeBeetweenDash;
+	Time timeBetweenDash;
 
 	int nbDash;
 

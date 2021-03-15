@@ -11,35 +11,31 @@ private:
     int points;
     float enemySpawnTimer;
     float enemySpawnTimerMax;
-    int maxEnemies;
+    int cptEnemies;
 
     unique_ptr<Player> player;
     vector<unique_ptr<Enemy>> enemies;
     vector<unique_ptr<Bonus>> bonus;
-    CircleShape spawnArea;
 
 private:
     void InitPlayer();
     void InitTexture();
     void InitVariables();
-    void InitSpawnArea();
 
 public:
     GameState(RenderWindow* _window, stack<State*>* _states);
-    ~GameState();
+    ~GameState() = default;
 
     void DropBonus(float _x, float _y);
     void SpawnEnemy();
     void KillEnemy();
-    void UpdateView();
-    void UpdateSpawnArea();
+
     virtual void UpdateInput(const float& _dt);
     void UpdateEnemies(const float& _dt);
     virtual void Update(const float& _dt);
     virtual void EndState();
     void PauseMenu();
 
-    void RenderSpawnArea(RenderTarget* _target);
     void RenderEnemies(RenderTarget* _target);
     void RenderPlayer(RenderTarget* _target);
     void RenderBonus(RenderTarget* _target);

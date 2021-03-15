@@ -10,7 +10,7 @@ void Player::InitShape()
 
 void Player::InitNoSpawnAera()
 {
-	this->noSpawnArea.setRadius(50.f);
+	this->noSpawnArea.setRadius(500.f);
 	this->noSpawnArea.setOrigin(
 		this->noSpawnArea.getRadius(),
 		this->noSpawnArea.getRadius()
@@ -76,9 +76,9 @@ void Player::Move(const float& _dt)
 
 void Player::Dash(const float& _dt)
 {
-	if (Keyboard::isKeyPressed(Keyboard::Space) && this->nbDash > 0 && this->timeBeetweenDash.asSeconds() >= 2)
+	if (Keyboard::isKeyPressed(Keyboard::Space) && this->nbDash > 0 && this->timeBetweenDash.asSeconds() >= 2)
 	{
-		this->timeBeetweenDash = this->clockDash.restart();
+		this->timeBetweenDash = this->clockDash.restart();
 		this->shape.move(this->velocity.x * 2 * _dt, this->velocity.y * 2 * _dt);
 		this->nbDash--;
 	}
@@ -91,8 +91,15 @@ void Player::Dash(const float& _dt)
 
 void Player::Shoot(const float& _dt)
 {
-	bullets.push_back(make_shared<Bullet>(*this->mousePosView,
-		this->shape.getPosition().x, this->shape.getPosition().y));
+	this->timeBetweenShoot += _dt;
+
+	if (this->timeBetweenShoot >= .1f)
+	{
+		bullets.push_back(make_shared<Bullet>(*this->mousePosView,
+			this->shape.getPosition().x, this->shape.getPosition().y));
+
+		this->timeBetweenShoot = 0;
+	}
 
 	for (int i = 0; i < this->bullets.size(); i++) {
 		this->bullets[i]->Update(_dt);
@@ -114,7 +121,7 @@ void Player::Shoot(const float& _dt)
 
 void Player::Update(const float& _dt)
 {
-	this->timeBeetweenDash = this->clockDash.getElapsedTime();
+	this->timeBetweenDash = this->clockDash.getElapsedTime();
 
 	this->Move(_dt);
 	this->Shoot(_dt);
@@ -140,5 +147,4 @@ void Player::Draw(RenderTarget& _target)
 
 	_target.draw(this->shape);
 	_target.draw(this->noSpawnArea);
-
 }

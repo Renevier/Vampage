@@ -16,33 +16,15 @@ void GameState::InitVariables()
 	this->points = 0;
 	this->enemySpawnTimerMax = 10.f;
 	this->enemySpawnTimer = this->enemySpawnTimerMax;
-	this->maxEnemies = 30;
+	this->cptEnemies = 10;
 }
-
-void GameState::InitSpawnArea()
-{
-	this->spawnArea.setRadius(1000.f);
-	this->spawnArea.setOrigin(
-		this->spawnArea.getRadius(),
-		this->spawnArea.getRadius()
-	);
-	this->spawnArea.setFillColor(Color::Transparent);
-	this->spawnArea.setPosition(this->view.getCenter());
-
-	this->spawnArea.setOutlineThickness(1.f);
-	this->spawnArea.setOutlineColor(Color::Yellow);
-}
-
 GameState::GameState(RenderWindow* _window, stack<State*>* _states)
 	: State(_window, _states)
 {
 	this->InitVariables();
 	this->InitTexture();
 	this->InitPlayer();
-	this->InitSpawnArea();
 }
-
-GameState::~GameState() {}
 
 void GameState::DropBonus(float _x, float _y)
 {
@@ -55,7 +37,10 @@ void GameState::SpawnEnemy()
 	float posY = static_cast<float>(rand() % static_cast<int>(this->window->getSize().y));
 
 	if (!this->player->GetNoSpawnArea().getGlobalBounds().contains(Vector2f(posX, posY)))
+	{
 		this->enemies.push_back(make_unique<Enemy>(posX, posY, &this->player->GetPos()));
+		this->cptEnemies++;
+	}
 }
 
 void GameState::KillEnemy()
@@ -66,21 +51,16 @@ void GameState::KillEnemy()
 		{
 			if ((*it)->GetBounds().intersects((*it2)->GetBounds()))
 			{
-				this->DropBonus((*it)->GetShape().getPosition().x, (*it)->GetShape().getPosition().y);
-				it2 = this->enemies.erase(it2);
-
 				if (it2 != this->enemies.begin())
 					it2--;
+				it2 = this->enemies.erase(it2);
+
+				this->DropBonus((*it)->GetShape().getPosition().x, (*it)->GetShape().getPosition().y);
 
 				break;
 			}
 		}
 	}
-}
-
-void GameState::UpdateSpawnArea()
-{
-	this->spawnArea.setPosition(this->view.getCenter());
 }
 
 void GameState::UpdateInput(const float& _dt)
@@ -89,12 +69,13 @@ void GameState::UpdateInput(const float& _dt)
 
 void GameState::UpdateEnemies(const float& _dt)
 {
-	if (this->enemies.size() < this->maxEnemies)
+	if (this->enemies.size() <= this->cptEnemies)
 	{
 		if (this->enemySpawnTimer >= this->enemySpawnTimerMax)
 		{
 			this->SpawnEnemy();
 			this->enemySpawnTimer = 0.f;
+			this->cptEnemies--;
 		}
 		else
 			this->enemySpawnTimer += 1.f;
@@ -108,7 +89,6 @@ void GameState::UpdateEnemies(const float& _dt)
 
 void GameState::Update(const float& _dt)
 {
-	this->UpdateSpawnArea();
 	this->UpdateMousePosition();
 
 	this->UpdateEnemies(_dt);
@@ -121,11 +101,6 @@ void GameState::EndState()
 
 void GameState::PauseMenu()
 {
-}
-
-void GameState::RenderSpawnArea(RenderTarget* _target)
-{
-	_target->draw(this->spawnArea);
 }
 
 void GameState::RenderEnemies(RenderTarget* _target)
@@ -151,7 +126,6 @@ void GameState::Render(RenderTarget* _target)
 		_target = this->window;
 
 	this->RenderPlayer(_target);
-	this->RenderSpawnArea(_target);
 	this->RenderBonus(_target);
 	this->RenderEnemies(_target);
 }
