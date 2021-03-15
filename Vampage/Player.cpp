@@ -38,6 +38,9 @@ Player::~Player()
 
 void Player::Move(const float& _dt)
 {
+	system("CLS");
+	cout << this->velocity.x << " " << this->velocity.y;
+
 	if (Keyboard::isKeyPressed(Keyboard::Z))
 	{
 		this->velocity.y = 0.f;
@@ -73,16 +76,15 @@ void Player::Move(const float& _dt)
 		this->velocity.x += this->movementSpeed * _dt;
 		this->velocity.y = 0;
 	}
+}
 
-	this->timeBeetweenDash = this->clockDash.getElapsedTime();
-
+void Player::Dash(const float& _dt)
+{
 	if (Keyboard::isKeyPressed(Keyboard::Space) && this->nbDash > 0 && this->timeBeetweenDash.asSeconds() >= 2)
 	{
 		this->timeBeetweenDash = this->clockDash.restart();
-		this->shape.move(this->velocity.x * 1000 * _dt, this->velocity.y * 1000 * _dt);
+		this->shape.move(this->velocity.x * 2 * _dt, this->velocity.y * 2 * _dt);
 		this->nbDash--;
-
-		cout << this->nbDash << endl;
 	}
 
 	if (Keyboard::isKeyPressed(Keyboard::Numpad2))
@@ -91,17 +93,10 @@ void Player::Move(const float& _dt)
 	}
 }
 
-void Player::Dash(const float& _dt)
-{
-	if (Keyboard::isKeyPressed(Keyboard::Space))
-		this->shape.move(this->velocity.x * 2 * _dt, this->velocity.y * 2 * _dt);
-}
-
 void Player::Shoot(const float& _dt)
 {
 	bullets.push_back(make_shared<Bullet>(*this->mousePosView,
 		this->shape.getPosition().x, this->shape.getPosition().y));
-
 
 	for (int i = 0; i < this->bullets.size(); i++) {
 		this->bullets[i]->Update(_dt);
@@ -123,6 +118,8 @@ void Player::Shoot(const float& _dt)
 
 void Player::Update(const float& _dt)
 {
+	this->timeBeetweenDash = this->clockDash.getElapsedTime();
+
 	this->Move(_dt);
 	this->Shoot(_dt);
 	this->Dash(_dt);

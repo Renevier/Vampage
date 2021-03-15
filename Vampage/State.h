@@ -18,7 +18,6 @@ protected:
 	map<string, Texture> textures;
 
 protected:
-	virtual void InitView();
 
 public:
 	State(RenderWindow* _window, stack<State*>* _states);

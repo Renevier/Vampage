@@ -19,21 +19,6 @@ void GameState::InitVariables()
 	this->maxEnemies = 30;
 }
 
-void GameState::InitView()
-{
-	this->view.setSize(
-		static_cast<float>(this->window->getSize().x),
-		static_cast<float>(this->window->getSize().y)
-	);
-
-	this->view.setCenter(
-		this->player->GetPos().x,
-		this->player->GetPos().y
-	);
-
-	this->window->setView(this->view);
-}
-
 void GameState::InitSpawnArea()
 {
 	this->spawnArea.setRadius(1000.f);
@@ -54,7 +39,6 @@ GameState::GameState(RenderWindow* _window, stack<State*>* _states)
 	this->InitVariables();
 	this->InitTexture();
 	this->InitPlayer();
-	this->InitView();
 	this->InitSpawnArea();
 }
 
@@ -94,14 +78,6 @@ void GameState::KillEnemy()
 	}
 }
 
-void GameState::UpdateView()
-{
-	this->view.setCenter(this->player->GetPos().x,
-		this->player->GetPos().y);
-
-	this->window->setView(this->view);
-}
-
 void GameState::UpdateSpawnArea()
 {
 	this->spawnArea.setPosition(this->view.getCenter());
@@ -132,7 +108,6 @@ void GameState::UpdateEnemies(const float& _dt)
 
 void GameState::Update(const float& _dt)
 {
-	this->UpdateView();
 	this->UpdateSpawnArea();
 	this->UpdateMousePosition();
 

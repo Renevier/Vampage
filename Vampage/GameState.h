@@ -22,7 +22,6 @@ private:
     void InitPlayer();
     void InitTexture();
     void InitVariables();
-    virtual void InitView();
     void InitSpawnArea();
 
 public:
