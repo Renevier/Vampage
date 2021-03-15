@@ -32,15 +32,8 @@ Player::Player(Vector2f* _mousePosView, float _x, float _y) :
 	this->shootingLenght = 500.f;
 }
 
-Player::~Player()
-{
-}
-
 void Player::Move(const float& _dt)
 {
-	system("CLS");
-	cout << this->velocity.x << " " << this->velocity.y;
-
 	if (Keyboard::isKeyPressed(Keyboard::Z))
 	{
 		this->velocity.y = 0.f;

@@ -23,7 +23,7 @@ private:
 
 public:
 	Player(Vector2f* _mousePosView, float _x, float _y);
-	~Player();
+	~Player() = default;
 
 	virtual void Move(const float& _dt);
 	void Dash(const float& _dt);
