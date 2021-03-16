@@ -17,18 +17,38 @@ void GameState::InitVariables()
 	this->enemySpawnTimerMax = 10.f;
 	this->enemySpawnTimer = this->enemySpawnTimerMax;
 	this->cptEnemies = 10;
+	this->timerForNextLevel = 0.f;
+	this->goToNextLevel = false;
+}
+void GameState::InitEndLevel()
+{
+	this->endLevel.setSize(Vector2f(500, this->window->getSize().y));
+	this->endLevel.setFillColor(Color(20, 20, 20, 200));
+	this->endLevel.setOutlineColor(Color::Red);
+	this->endLevel.setOutlineThickness(1.f);
+
+	this->endLevel.setOrigin(Vector2f(
+		this->endLevel.getGlobalBounds().width / 2,
+		this->endLevel.getGlobalBounds().height / 2
+	));
+
+	this->endLevel.setPosition(Vector2f(
+		this->window->getSize().x / 2,
+		this->window->getSize().y / 2
+	));
 }
 GameState::GameState(RenderWindow* _window, stack<State*>* _states)
 	: State(_window, _states)
 {
 	this->InitVariables();
 	this->InitTexture();
+	this->InitEndLevel();
 	this->InitPlayer();
 }
 
 void GameState::DropBonus(float _x, float _y)
 {
-	this->bonus.push_back(make_unique<Bonus>(_x, _y));
+	this->bonus = new Bonus(_x, _y);
 }
 
 void GameState::SpawnEnemy()
@@ -37,25 +57,28 @@ void GameState::SpawnEnemy()
 	float posY = static_cast<float>(rand() % static_cast<int>(this->window->getSize().y));
 
 	if (!this->player->GetNoSpawnArea().getGlobalBounds().contains(Vector2f(posX, posY)))
-	{
 		this->enemies.push_back(make_unique<Enemy>(posX, posY, &this->player->GetPos()));
+	else
 		this->cptEnemies++;
-	}
+
 }
 
 void GameState::KillEnemy()
-{ 
+{
 	for (auto it = this->player->GetBullets().begin(); it != this->player->GetBullets().end(); it++)
 	{
 		for (auto it2 = this->enemies.begin(); it2 != enemies.end(); it2++)
 		{
 			if ((*it)->GetBounds().intersects((*it2)->GetBounds()))
 			{
-				if (it2 != this->enemies.begin())
-					it2--;
+				/*if (it2 != this->enemies.begin())
+					it2--;*/
+
 				it2 = this->enemies.erase(it2);
 
-				this->DropBonus((*it)->GetShape().getPosition().x, (*it)->GetShape().getPosition().y);
+				if (this->cptEnemies == 0) {
+					this->DropBonus((*it)->GetShape().getPosition().x, (*it)->GetShape().getPosition().y);
+				}
 
 				break;
 			}
@@ -69,7 +92,7 @@ void GameState::UpdateInput(const float& _dt)
 
 void GameState::UpdateEnemies(const float& _dt)
 {
-	if (this->enemies.size() <= this->cptEnemies)
+	if (this->enemies.size() < this->cptEnemies)
 	{
 		if (this->enemySpawnTimer >= this->enemySpawnTimerMax)
 		{
@@ -91,21 +114,57 @@ void GameState::Update(const float& _dt)
 {
 	this->UpdateMousePosition();
 
-	this->UpdateEnemies(_dt);
-	this->player->Update(_dt);
+	if (!this->bonus)
+	{
+		this->UpdateEnemies(_dt);
+		this->player->Update(_dt);
+	}
+	else
+	{
+		if (!PickedUpBonus(_dt))
+		{
+			this->UpdateEnemies(_dt);
+			this->player->Update(_dt);
+		}
+		else
+		{
+			this->timerForNextLevel += _dt;
+
+			if (this->timerForNextLevel >= 5.f)
+			{
+				this->timerForNextLevel = 0.f;
+				this->bonus = nullptr;
+				this->goToNextLevel = false;
+			}
+		}	
+	}
 }
 
 void GameState::EndState()
 {
+	this->states->pop();
 }
 
 void GameState::PauseMenu()
 {
 }
 
+bool GameState::PickedUpBonus(const float& _dt)
+{
+	if (this->player->GetShape().getGlobalBounds().intersects(this->bonus->GetBounds()))
+	{		
+		this->player->AddBonus(this->bonus);
+
+		this->goToNextLevel = true;
+		return true;
+	}
+
+	return false;
+}
+
 void GameState::RenderEnemies(RenderTarget* _target)
 {
-	for (auto &it : this->enemies)
+	for (auto& it : this->enemies)
 		it->Draw(*_target);
 }
 
@@ -116,8 +175,7 @@ void GameState::RenderPlayer(RenderTarget* _target)
 
 void GameState::RenderBonus(RenderTarget* _target)
 {
-	for (auto &it: this->bonus)
-		it->Draw(*_target);
+	this->bonus->Draw(*_target);
 }
 
 void GameState::Render(RenderTarget* _target)
@@ -126,6 +184,14 @@ void GameState::Render(RenderTarget* _target)
 		_target = this->window;
 
 	this->RenderPlayer(_target);
-	this->RenderBonus(_target);
 	this->RenderEnemies(_target);
+
+	if (this->bonus)
+	{
+		this->RenderBonus(_target);
+
+		if (this->goToNextLevel)
+			_target->draw(this->endLevel);
+	}
+
 }

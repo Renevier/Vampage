@@ -52,6 +52,9 @@
     <Filter Include="Classes\Entity\Bonus">
       <UniqueIdentifier>{7215bec2-cfc3-4f68-afbe-780ff8ccf231}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Classes\GUI\HUD">
+      <UniqueIdentifier>{8aaf3b9a-4b54-4b2e-a9da-9b4592b47023}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -87,8 +90,11 @@
     <ClCompile Include="Bullet.cpp">
       <Filter>Classes\Entity\Bullet</Filter>
     </ClCompile>
+    <ClCompile Include="LevelEnded.cpp">
+      <Filter>Classes\GUI\HUD</Filter>
+    </ClCompile>
     <ClCompile Include="Bonus.cpp">
-      <Filter>Fichiers sources</Filter>
+      <Filter>Classes\Entity\Bonus</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -125,8 +131,11 @@
     <ClInclude Include="Tool.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
+    <ClInclude Include="LevelEnded.h">
+      <Filter>Classes\GUI\HUD</Filter>
+    </ClInclude>
     <ClInclude Include="Bonus.h">
-      <Filter>Fichiers d%27en-tête</Filter>
+      <Filter>Classes\Entity\Bonus</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

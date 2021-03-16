@@ -1,6 +1,7 @@
 #pragma once
 #include "Entity.h"
 #include "Bullet.h"
+#include "Bonus.h"
 
 class Player
 	:public Entity
@@ -15,20 +16,21 @@ private:
 	Clock clockDash;
 	Time timeBetweenDash;
 
+	int nbDashMax;
 	int nbDash;
 
 	float timeBetweenShoot { 0.f };
-
-	unsigned int nbEnnemie{ 0 };
-	
+	vector<Bonus*> bonus;
+		
 private:
 	virtual void InitShape();
 	void InitNoSpawnAera();
 
 public:
 	Player(Vector2f* _mousePosView, float _x, float _y);
-	~Player() = default;
+	~Player();
 
+	void AddBonus(Bonus* _bonus);
 	virtual void Move(const float& _dt);
 	void Dash(const float& _dt);
 	void Shoot(const float& _dt);
@@ -41,4 +43,12 @@ public:
 	inline CircleShape& GetNoSpawnArea() { return this->noSpawnArea; }
 	inline const Vector2f& GetPos() const { return this->shape.getPosition(); }
 	inline vector<shared_ptr<Bullet>>& GetBullets() { return this->bullets; }
+
+	inline int SetNbDash(int _nbDash)
+	{ 
+		if (_nbDash > this->nbDashMax)
+			_nbDash = this->nbDashMax;
+
+		this->nbDash = _nbDash;
+	}
 };

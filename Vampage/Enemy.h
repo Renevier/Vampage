@@ -11,7 +11,7 @@ protected:
 
 public:
 	Enemy(float _x, float _y, const Vector2f* _playerPos);
-	~Enemy();
+	~Enemy() = default;
 
 	virtual void Move(const float& _dt);
 	virtual void Update(const float& _dt);

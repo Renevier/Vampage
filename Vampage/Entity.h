@@ -27,5 +27,7 @@ public:
 	virtual void Move(const float& _dt) = 0;
 	virtual void Update(const float& _dt) = 0;
 	virtual void Draw(RenderTarget& _target) = 0;
+
+	inline const RectangleShape& GetShape() const { return this->shape; }
 };
 

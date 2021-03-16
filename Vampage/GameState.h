@@ -7,20 +7,25 @@
 class GameState :
     public State
 {
-private:
+private:    
     int points;
     float enemySpawnTimer;
     float enemySpawnTimerMax;
     int cptEnemies;
+    float timerForNextLevel;
 
     unique_ptr<Player> player;
     vector<unique_ptr<Enemy>> enemies;
-    vector<unique_ptr<Bonus>> bonus;
+    Bonus* bonus;
+    RectangleShape endLevel;
+
+    bool goToNextLevel;
 
 private:
     void InitPlayer();
     void InitTexture();
     void InitVariables();
+    void InitEndLevel();
 
 public:
     GameState(RenderWindow* _window, stack<State*>* _states);
@@ -29,6 +34,7 @@ public:
     void DropBonus(float _x, float _y);
     void SpawnEnemy();
     void KillEnemy();
+    bool PickedUpBonus(const float& _dt);
 
     virtual void UpdateInput(const float& _dt);
     void UpdateEnemies(const float& _dt);

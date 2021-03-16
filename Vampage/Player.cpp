@@ -24,7 +24,7 @@ void Player::InitNoSpawnAera()
 }
 
 Player::Player(Vector2f* _mousePosView, float _x, float _y) :
-	nbDash(2)
+	nbDashMax(3), nbDash(nbDashMax)
 {
 	this->InitShape();
 	this->InitPosition(_x, _y);
@@ -33,6 +33,18 @@ Player::Player(Vector2f* _mousePosView, float _x, float _y) :
 	this->movementSpeed = 500.f;
 	this->mousePosView = _mousePosView;
 	this->shootingLenght = 500.f;
+}
+
+Player::~Player()
+{
+	//delete bonus
+	for (auto it : this->bonus)
+		delete it;
+}
+
+void Player::AddBonus(Bonus* _bonus)
+{
+	this->bonus.push_back(_bonus);
 }
 
 void Player::Move(const float& _dt)
