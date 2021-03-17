@@ -3,6 +3,7 @@
 #include "Player.h"
 #include "Enemy.h"
 #include "Bonus.h"
+#include "LevelEnded.h"
 
 class GameState :
     public State
@@ -17,7 +18,7 @@ private:
     unique_ptr<Player> player;
     vector<unique_ptr<Enemy>> enemies;
     Bonus* bonus;
-    RectangleShape endLevel;
+    unique_ptr<LevelEnded> levelEnded;
 
     bool goToNextLevel;
 
@@ -29,7 +30,7 @@ private:
 
 public:
     GameState(RenderWindow* _window, stack<State*>* _states);
-    ~GameState() = default;
+    ~GameState();
 
     void DropBonus(float _x, float _y);
     void SpawnEnemy();

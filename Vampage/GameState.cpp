@@ -22,20 +22,7 @@ void GameState::InitVariables()
 }
 void GameState::InitEndLevel()
 {
-	this->endLevel.setSize(Vector2f(500, this->window->getSize().y));
-	this->endLevel.setFillColor(Color(20, 20, 20, 200));
-	this->endLevel.setOutlineColor(Color::Red);
-	this->endLevel.setOutlineThickness(1.f);
-
-	this->endLevel.setOrigin(Vector2f(
-		this->endLevel.getGlobalBounds().width / 2,
-		this->endLevel.getGlobalBounds().height / 2
-	));
-
-	this->endLevel.setPosition(Vector2f(
-		this->window->getSize().x / 2,
-		this->window->getSize().y / 2
-	));
+	this->levelEnded = make_unique<LevelEnded>(this->window);
 }
 GameState::GameState(RenderWindow* _window, stack<State*>* _states)
 	: State(_window, _states)
@@ -44,6 +31,11 @@ GameState::GameState(RenderWindow* _window, stack<State*>* _states)
 	this->InitTexture();
 	this->InitEndLevel();
 	this->InitPlayer();
+}
+
+GameState::~GameState()
+{
+	delete this->bonus;
 }
 
 void GameState::DropBonus(float _x, float _y)
@@ -129,6 +121,7 @@ void GameState::Update(const float& _dt)
 		else
 		{
 			this->timerForNextLevel += _dt;
+			this->levelEnded->UpdateTimer(timerForNextLevel);
 
 			if (this->timerForNextLevel >= 5.f)
 			{
@@ -136,7 +129,7 @@ void GameState::Update(const float& _dt)
 				this->bonus = nullptr;
 				this->goToNextLevel = false;
 			}
-		}	
+		}
 	}
 }
 
@@ -152,7 +145,7 @@ void GameState::PauseMenu()
 bool GameState::PickedUpBonus(const float& _dt)
 {
 	if (this->player->GetShape().getGlobalBounds().intersects(this->bonus->GetBounds()))
-	{		
+	{
 		this->player->AddBonus(this->bonus);
 
 		this->goToNextLevel = true;
@@ -188,10 +181,10 @@ void GameState::Render(RenderTarget* _target)
 
 	if (this->bonus)
 	{
-		this->RenderBonus(_target);
-
 		if (this->goToNextLevel)
-			_target->draw(this->endLevel);
+			this->levelEnded->Render(_target);
+		else
+			this->RenderBonus(_target);
 	}
 
 }
