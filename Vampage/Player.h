@@ -7,6 +7,7 @@ class Player
 	:public Entity
 {
 private:
+	Texture playerTexture;
 	CircleShape noSpawnArea;
 	vector<shared_ptr<Bullet>> bullets;
 	Vector2f* mousePosView;

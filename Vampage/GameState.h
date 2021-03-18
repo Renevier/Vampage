@@ -17,8 +17,8 @@ private:
 
     unique_ptr<Player> player;
     vector<unique_ptr<Enemy>> enemies;
-    Bonus* bonus;
     unique_ptr<LevelEnded> levelEnded;
+    Bonus* bonus;
 
     bool goToNextLevel;
 

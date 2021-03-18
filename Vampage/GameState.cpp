@@ -63,6 +63,8 @@ void GameState::KillEnemy()
 		{
 			if ((*it)->GetBounds().intersects((*it2)->GetBounds()))
 			{
+				this->points += 10;
+
 				/*if (it2 != this->enemies.begin())
 					it2--;*/
 
@@ -121,7 +123,8 @@ void GameState::Update(const float& _dt)
 		else
 		{
 			this->timerForNextLevel += _dt;
-			this->levelEnded->UpdateTimer(timerForNextLevel);
+			this->levelEnded->UpdateTimer(this->timerForNextLevel);
+			this->levelEnded->UpdateScore(this->points);
 
 			if (this->timerForNextLevel >= 5.f)
 			{
