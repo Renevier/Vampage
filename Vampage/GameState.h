@@ -1,6 +1,7 @@
 #pragma once
 #include "State.h"
 #include "Player.h"
+#include "Tool.h"
 #include "Enemy.h"
 #include "Bonus.h"
 #include "LevelEnded.h"
@@ -8,7 +9,8 @@
 class GameState :
     public State
 {
-private:    
+private:  
+    int level;
     int points;
     float enemySpawnTimer;
     float enemySpawnTimerMax;

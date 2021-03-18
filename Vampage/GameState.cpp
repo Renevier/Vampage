@@ -13,17 +13,20 @@ void GameState::InitTexture()
 
 void GameState::InitVariables()
 {
+	this->level = 1;
 	this->points = 0;
 	this->enemySpawnTimerMax = 10.f;
 	this->enemySpawnTimer = this->enemySpawnTimerMax;
-	this->cptEnemies = 10;
+	this->cptEnemies = this->level * 10;
 	this->timerForNextLevel = 0.f;
 	this->goToNextLevel = false;
 }
+
 void GameState::InitEndLevel()
 {
 	this->levelEnded = make_unique<LevelEnded>(this->window);
 }
+
 GameState::GameState(RenderWindow* _window, stack<State*>* _states)
 	: State(_window, _states)
 {
@@ -115,10 +118,11 @@ void GameState::Update(const float& _dt)
 	}
 	else
 	{
-		if (!PickedUpBonus(_dt))
+		if (!this->goToNextLevel)
 		{
 			this->UpdateEnemies(_dt);
 			this->player->Update(_dt);
+			this->PickedUpBonus(_dt);
 		}
 		else
 		{
@@ -151,6 +155,8 @@ bool GameState::PickedUpBonus(const float& _dt)
 	{
 		this->player->AddBonus(this->bonus);
 
+		this->level++;
+		this->cptEnemies = this->level * 10 - 5;
 		this->goToNextLevel = true;
 		return true;
 	}
