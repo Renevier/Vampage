@@ -1,24 +1,25 @@
 #include "pch.h"
 #include "Enemy.h"
 
-void Enemy::InitShape()
+void Enemy::InitShape(Color _color, Vector2f _size)
 {
-	this->shape.setFillColor(Color::Green);
-	this->shape.setSize(Vector2f(100.f, 100.f));
+	this->shape.setFillColor(_color);
+	this->shape.setSize(_size);
 }
 
-Enemy::Enemy(float _x, float _y, const Vector2f* _playerPos)
+Enemy::Enemy(RenderWindow* _window, float _x, float _y, Player* _player)
 {
-	this->InitShape();
+	this->InitShape(Color::Green, Vector2f(50, 50));
 	this->InitPosition(_x, _y);
 
-	this->playerPos = _playerPos;
+	this->player = _player;
 	this->movementSpeed = 400.f;
+	this->window = _window;
 }
 
 void Enemy::Move(const float& _dt)
 {
-	this->direction = *this->playerPos - this->shape.getPosition();
+	this->direction = this->player->GetPos() - this->shape.getPosition();
 
 	this->normailizeDir.x = this->direction.x / sqrt(pow(this->direction.x, 2) + pow(this->direction.y, 2));
 	this->normailizeDir.y = this->direction.y / sqrt(pow(this->direction.x, 2) + pow(this->direction.y, 2));

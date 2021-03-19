@@ -3,6 +3,8 @@
 #include "Player.h"
 #include "Tool.h"
 #include "Enemy.h"
+#include "RangedEnnemy.h"
+#include "BouncedEnemy.h"
 #include "Bonus.h"
 #include "LevelEnded.h"
 
@@ -17,7 +19,7 @@ private:
     int cptEnemies;
     float timerForNextLevel;
 
-    unique_ptr<Player> player;
+    Player* player;
     vector<unique_ptr<Enemy>> enemies;
     unique_ptr<LevelEnded> levelEnded;
     Bonus* bonus;

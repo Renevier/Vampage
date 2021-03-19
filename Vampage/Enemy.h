@@ -1,16 +1,19 @@
 #pragma once
 #include "Entity.h"
+#include "Player.h"
+
 class Enemy :
 	public Entity
 {
 protected:
-	const Vector2f* playerPos;
+	RenderWindow* window;
+	Player* player;
 
 protected:
-	virtual void InitShape();
+	virtual void InitShape(Color _color, Vector2f _size);
 
 public:
-	Enemy(float _x, float _y, const Vector2f* _playerPos);
+	Enemy(RenderWindow* _window, float _x, float _y, Player* _player);
 	~Enemy() = default;
 
 	virtual void Move(const float& _dt);
@@ -19,6 +22,5 @@ public:
 	virtual void Draw(RenderTarget& _target);
 
 	inline const RectangleShape& GetShape() const { return this->shape; }
-	inline const FloatRect& GetBounds() const { return this->shape.getGlobalBounds(); }
 };
 

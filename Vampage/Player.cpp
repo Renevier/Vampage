@@ -30,8 +30,8 @@ void Player::InitNoSpawnAera()
 	this->noSpawnArea.setFillColor(Color::Transparent);
 	this->noSpawnArea.setPosition(this->shape.getPosition());
 
-	/*this->noSpawnArea.setOutlineThickness(1.f);
-	this->noSpawnArea.setOutlineColor(Color::Green);*/
+	this->noSpawnArea.setOutlineThickness(1.f);
+	this->noSpawnArea.setOutlineColor(Color::Green);
 }
 
 Player::Player(Vector2f* _mousePosView, float _x, float _y) :

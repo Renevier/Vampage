@@ -1,10 +1,8 @@
 #pragma once
 
-enum class LEVEL
+enum class ENNEMIES_TYPE
 {
-	LEVEL1 = 1,
-	LEVEL2,
-	LEVEL3,
-	LEVEL4,
-	LEVEL5
+	CaC,
+	RANGE,
+	BOUNCED
 };

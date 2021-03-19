@@ -55,6 +55,12 @@
     <Filter Include="Classes\GUI\HUD">
       <UniqueIdentifier>{8aaf3b9a-4b54-4b2e-a9da-9b4592b47023}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Classes\Entity\Character\Enemy\BouncedEnemy">
+      <UniqueIdentifier>{1e62ab01-9b4d-4b93-9ab4-9bce28102377}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes\Entity\Character\Enemy\RangedEnemy">
+      <UniqueIdentifier>{868f334a-6d85-44c6-8241-219d0e46820e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -96,6 +102,12 @@
     <ClCompile Include="Bonus.cpp">
       <Filter>Classes\Entity\Bonus</Filter>
     </ClCompile>
+    <ClCompile Include="RangedEnnemy.cpp">
+      <Filter>Classes\Entity\Character\Enemy\RangedEnemy</Filter>
+    </ClCompile>
+    <ClCompile Include="BouncedEnemy.cpp">
+      <Filter>Classes\Entity\Character\Enemy\BouncedEnemy</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -136,6 +148,12 @@
     </ClInclude>
     <ClInclude Include="Bonus.h">
       <Filter>Classes\Entity\Bonus</Filter>
+    </ClInclude>
+    <ClInclude Include="RangedEnnemy.h">
+      <Filter>Classes\Entity\Character\Enemy\RangedEnemy</Filter>
+    </ClInclude>
+    <ClInclude Include="BouncedEnemy.h">
+      <Filter>Classes\Entity\Character\Enemy\BouncedEnemy</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

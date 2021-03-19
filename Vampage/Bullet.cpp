@@ -14,14 +14,15 @@ void Bullet::InitPos(float _x, float _y)
 	this->shape.setPosition(_x, _y);
 }
 
-Bullet::Bullet(Vector2f _mousePosView, float _x, float _y)
+Bullet::Bullet(Vector2f _target, float _x, float _y)
 {
 	this->InitShape();
 	this->InitPos(_x, _y);
 
 	this->movementSpeed = 1000.f;
+	this->target = _target;
 
-	this->mousePosView = _mousePosView; this->direction = this->mousePosView - this->shape.getPosition();
+	this->direction = this->target - this->shape.getPosition();
 	this->normailizeDir.x = this->direction.x / sqrt(pow(this->direction.x, 2) + pow(this->direction.y, 2));
 	this->normailizeDir.y = this->direction.y / sqrt(pow(this->direction.x, 2) + pow(this->direction.y, 2));
 }
@@ -31,7 +32,8 @@ Bullet::~Bullet()
 }
 
 void Bullet::Move(const float& _dt)
-{	this->velocity = this->normailizeDir * this->movementSpeed * _dt;
+{
+	this->velocity = this->normailizeDir * this->movementSpeed * _dt;
 
 	this->shape.move(velocity);
 }

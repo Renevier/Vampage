@@ -45,7 +45,7 @@ public:
 	inline const Vector2f& GetPos() const { return this->shape.getPosition(); }
 	inline vector<shared_ptr<Bullet>>& GetBullets() { return this->bullets; }
 
-	inline int SetNbDash(int _nbDash)
+	inline void SetNbDash(int _nbDash)
 	{ 
 		if (_nbDash > this->nbDashMax)
 			_nbDash = this->nbDashMax;

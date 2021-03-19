@@ -3,7 +3,7 @@
 
 void GameState::InitPlayer()
 {
-	this->player = make_unique<Player>(&this->mousePosView, this->window->getSize().x / 2, this->window->getSize().y / 2);
+	this->player = new Player(&this->mousePosView, this->window->getSize().x / 2, this->window->getSize().y / 2);
 }
 
 void GameState::InitTexture()
@@ -52,7 +52,7 @@ void GameState::SpawnEnemy()
 	float posY = static_cast<float>(rand() % static_cast<int>(this->window->getSize().y));
 
 	if (!this->player->GetNoSpawnArea().getGlobalBounds().contains(Vector2f(posX, posY)))
-		this->enemies.push_back(make_unique<Enemy>(posX, posY, &this->player->GetPos()));
+		this->enemies.push_back(make_unique<BouncedEnemy>(this->window, posX, posY, this->player));
 	else
 		this->cptEnemies++;
 
@@ -109,6 +109,10 @@ void GameState::UpdateEnemies(const float& _dt)
 
 void GameState::Update(const float& _dt)
 {
+	system("CLS");
+	cout << cptEnemies;
+
+
 	this->UpdateMousePosition();
 
 	if (!this->bonus)
@@ -135,6 +139,7 @@ void GameState::Update(const float& _dt)
 				this->timerForNextLevel = 0.f;
 				this->bonus = nullptr;
 				this->goToNextLevel = false;
+				this->player->SetNbDash(3);
 			}
 		}
 	}
