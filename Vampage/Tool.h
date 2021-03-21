@@ -6,3 +6,10 @@ enum class ENNEMIES_TYPE
 	RANGE,
 	BOUNCED
 };
+
+enum class BONUS_EFFECT
+{
+	SHIELD,
+	DASH_MAX,
+
+};
