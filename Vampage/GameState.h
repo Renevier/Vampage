@@ -25,6 +25,7 @@ private:
     Bonus* bonus;
 
     bool goToNextLevel;
+    bool onePass{ false };
 
 private:
     void InitPlayer();
@@ -39,7 +40,7 @@ public:
     void DropBonus(float _x, float _y);
     void SpawnEnemy();
     void KillEnemy();
-    bool PickedUpBonus(const float& _dt);
+    void PickedUpBonus(const float& _dt);
 
     virtual void UpdateInput(const float& _dt);
     void UpdateEnemies(const float& _dt);

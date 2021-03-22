@@ -43,7 +43,7 @@ Player::Player(Vector2f* _mousePosView, float _x, float _y) :
 
 	this->movementSpeed = 500.f;
 	this->mousePosView = _mousePosView;
-	this->shootingLenght = 500.f;
+	this->shootingLenght = 2.f;
 }
 
 Player::~Player()
@@ -127,12 +127,7 @@ void Player::Shoot(const float& _dt)
 	for (int i = 0; i < this->bullets.size(); i++) {
 		this->bullets[i]->Update(_dt);
 
-		Vector2f destroyBulletPos = Vector2f(
-			this->bullets[i]->GetShape().getPosition().x - this->shape.getPosition().x,
-			this->bullets[i]->GetShape().getPosition().y - this->shape.getPosition().y
-		);
-
-		if (abs(destroyBulletPos.x) + abs(destroyBulletPos.y) >= this->shootingLenght)
+		if (!this->bullets[i]->GetBounds().intersects(this->noSpawnArea.getGlobalBounds()))
 		{
 			if (i != 0)
 				i--;
@@ -144,6 +139,9 @@ void Player::Shoot(const float& _dt)
 
 void Player::Update(const float& _dt)
 {
+	/*system("CLS");
+	cout << this->haveShield;*/
+
 	this->timeBetweenDash = this->clockDash.getElapsedTime();
 
 	this->Move(_dt);
@@ -156,6 +154,32 @@ void Player::Update(const float& _dt)
 void Player::UpdateNoSpawnArea()
 {
 	this->noSpawnArea.setPosition(this->shape.getPosition());
+}
+
+void Player::CheckBonus()
+{
+	for (auto& it : this->bonus)
+	{
+		if (it->GetEffect() == BONUS_EFFECT::SHIELD && !this->haveShield)
+			this->haveShield = true;
+		else if (it->GetEffect() == BONUS_EFFECT::SHIELD && this->haveShield)
+			this->lifePoint++;
+		
+		if (it->GetEffect() == BONUS_EFFECT::DASH_MAX)
+			this->nbDashMax = 5;
+		else
+			this->nbDashMax = 3;
+
+		if (it->GetEffect() == BONUS_EFFECT::SHOOTING_DISTANCE)
+		{
+			this->noSpawnArea.setRadius(550.f);
+
+			this->noSpawnArea.setOrigin(
+				this->noSpawnArea.getRadius(),
+				this->noSpawnArea.getRadius()
+			);
+		}
+	}
 }
 
 void Player::RenderBullets(RenderTarget& _target)

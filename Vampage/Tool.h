@@ -9,7 +9,8 @@ enum class ENNEMIES_TYPE
 
 enum class BONUS_EFFECT
 {
+	NONE,
 	SHIELD,
 	DASH_MAX,
-
+	SHOOTING_DISTANCE
 };

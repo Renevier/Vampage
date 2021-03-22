@@ -11,6 +11,7 @@ private:
 	CircleShape noSpawnArea;
 	vector<shared_ptr<Bullet>> bullets;
 	Vector2f* mousePosView;
+	unsigned int lifePoint{ 1 };
 
 	float shootingLenght;
 
@@ -22,6 +23,7 @@ private:
 
 	float timeBetweenShoot { 0.f };
 	vector<Bonus*> bonus;
+	bool haveShield{ false };
 		
 private:
 	virtual void InitShape();
@@ -36,6 +38,7 @@ public:
 	void Dash(const float& _dt);
 	void Shoot(const float& _dt);
 	void UpdateNoSpawnArea();
+	void CheckBonus();
 	virtual void Update(const float& _dt);
 
 	void RenderBullets(RenderTarget& _target);
@@ -45,11 +48,5 @@ public:
 	inline const Vector2f& GetPos() const { return this->shape.getPosition(); }
 	inline vector<shared_ptr<Bullet>>& GetBullets() { return this->bullets; }
 
-	inline void SetNbDash(int _nbDash)
-	{ 
-		if (_nbDash > this->nbDashMax)
-			_nbDash = this->nbDashMax;
-
-		this->nbDash = _nbDash;
-	}
+	inline void SetNbDash() { this->nbDash = this->nbDashMax; }
 };

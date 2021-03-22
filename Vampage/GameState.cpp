@@ -43,7 +43,20 @@ GameState::~GameState()
 
 void GameState::DropBonus(float _x, float _y)
 {
-	this->bonus = new Bonus(_x, _y);
+	if(this->level == 1)
+		this->bonus = new Bonus(_x, _y, BONUS_EFFECT::SHIELD);
+
+	if (this->level == 2)
+		this->bonus = new Bonus(_x, _y, BONUS_EFFECT::DASH_MAX);
+
+	if (this->level == 3)
+		this->bonus = new Bonus(_x, _y, BONUS_EFFECT::NONE);
+
+	if (this->level == 4)
+		this->bonus = new Bonus(_x, _y, BONUS_EFFECT::SHOOTING_DISTANCE);
+
+	if (this->level == 5)
+		this->bonus = new Bonus(_x, _y, BONUS_EFFECT::NONE);
 }
 
 void GameState::SpawnEnemy()
@@ -52,7 +65,16 @@ void GameState::SpawnEnemy()
 	float posY = static_cast<float>(rand() % static_cast<int>(this->window->getSize().y));
 
 	if (!this->player->GetNoSpawnArea().getGlobalBounds().contains(Vector2f(posX, posY)))
-		this->enemies.push_back(make_unique<BouncedEnemy>(this->window, posX, posY, this->player));
+	{
+		int id = static_cast<float>(rand() % 3);
+
+		if(id == 0)
+			this->enemies.push_back(make_unique<Enemy>(this->window, posX, posY, this->player));
+		if (id == 1)
+			this->enemies.push_back(make_unique<RangedEnnemy>(this->window, posX, posY, this->player));
+		else
+			this->enemies.push_back(make_unique<BouncedEnemy>(this->window, posX, posY, this->player));
+	}
 	else
 		this->cptEnemies++;
 
@@ -109,10 +131,6 @@ void GameState::UpdateEnemies(const float& _dt)
 
 void GameState::Update(const float& _dt)
 {
-	system("CLS");
-	cout << cptEnemies;
-
-
 	this->UpdateMousePosition();
 
 	if (!this->bonus)
@@ -139,7 +157,8 @@ void GameState::Update(const float& _dt)
 				this->timerForNextLevel = 0.f;
 				this->bonus = nullptr;
 				this->goToNextLevel = false;
-				this->player->SetNbDash(3);
+				this->player->SetNbDash();
+				this->player->CheckBonus();
 			}
 		}
 	}
@@ -154,19 +173,17 @@ void GameState::PauseMenu()
 {
 }
 
-bool GameState::PickedUpBonus(const float& _dt)
+void GameState::PickedUpBonus(const float& _dt)
 {
 	if (this->player->GetShape().getGlobalBounds().intersects(this->bonus->GetBounds()))
 	{
 		this->player->AddBonus(this->bonus);
-
-		this->level++;
-		this->cptEnemies = this->level * 10 - 5;
 		this->goToNextLevel = true;
-		return true;
-	}
+		this->level++;
 
-	return false;
+		if(this->level <= 5)
+			this->cptEnemies = this->level * 10 - 5;
+	}
 }
 
 void GameState::RenderEnemies(RenderTarget* _target)
