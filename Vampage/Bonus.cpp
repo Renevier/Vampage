@@ -19,12 +19,15 @@ Bonus::Bonus(float _x, float _y, BONUS_EFFECT _effect)
 
 	this->effect = _effect;
 
-	if (this->effect == BONUS_EFFECT::SHIELD)
+	if (this->effect == BONUS_EFFECT::NONE)
 		this->cShape.setFillColor(Color::Green);
-	if (this->effect == BONUS_EFFECT::DASH_MAX)
-		this->cShape.setFillColor(Color::Red);
-	if (this->effect == BONUS_EFFECT::SHOOTING_DISTANCE)
+	if (this->effect == BONUS_EFFECT::SHIELD)		
 		this->cShape.setFillColor(Color::Blue);
+	if (this->effect == BONUS_EFFECT::DASH_MAX)
+		this->cShape.setFillColor(Color::Magenta);
+	if (this->effect == BONUS_EFFECT::SHOOTING_DISTANCE)
+		this->cShape.setFillColor(Color::Red);
+	
 }
 
 void Bonus::Move(const float& _dt)

@@ -61,6 +61,12 @@
     <Filter Include="Classes\Entity\Character\Enemy\RangedEnemy">
       <UniqueIdentifier>{868f334a-6d85-44c6-8241-219d0e46820e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Classes\Entity\Character\Enemy\Boss">
+      <UniqueIdentifier>{3f8e4b35-37f4-4293-abc1-a08b46cfa979}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes\States\BossState">
+      <UniqueIdentifier>{6b6ab256-8b5f-4ffb-8874-15f20c1229c2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -108,6 +114,12 @@
     <ClCompile Include="BouncedEnemy.cpp">
       <Filter>Classes\Entity\Character\Enemy\BouncedEnemy</Filter>
     </ClCompile>
+    <ClCompile Include="Boss.cpp">
+      <Filter>Classes\Entity\Character\Enemy\Boss</Filter>
+    </ClCompile>
+    <ClCompile Include="BossState.cpp">
+      <Filter>Classes\States\BossState</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -154,6 +166,12 @@
     </ClInclude>
     <ClInclude Include="BouncedEnemy.h">
       <Filter>Classes\Entity\Character\Enemy\BouncedEnemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Boss.h">
+      <Filter>Classes\Entity\Character\Enemy\Boss</Filter>
+    </ClInclude>
+    <ClInclude Include="BossState.h">
+      <Filter>Classes\States\BossState</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -161,6 +161,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Bonus.cpp" />
+    <ClCompile Include="Boss.cpp" />
+    <ClCompile Include="BossState.cpp" />
     <ClCompile Include="BouncedEnemy.cpp" />
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="Button.cpp" />
@@ -187,6 +189,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bonus.h" />
+    <ClInclude Include="Boss.h" />
+    <ClInclude Include="BossState.h" />
     <ClInclude Include="BouncedEnemy.h" />
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="Button.h" />

@@ -43,7 +43,7 @@ GameState::~GameState()
 
 void GameState::DropBonus(float _x, float _y)
 {
-	if(this->level == 1)
+	if (this->level == 1)
 		this->bonus = new Bonus(_x, _y, BONUS_EFFECT::SHIELD);
 
 	if (this->level == 2)
@@ -68,7 +68,7 @@ void GameState::SpawnEnemy()
 	{
 		int id = static_cast<float>(rand() % 3);
 
-		if(id == 0)
+		if (id == 0)
 			this->enemies.push_back(make_unique<Enemy>(this->window, posX, posY, this->player));
 		if (id == 1)
 			this->enemies.push_back(make_unique<RangedEnnemy>(this->window, posX, posY, this->player));
@@ -80,6 +80,12 @@ void GameState::SpawnEnemy()
 
 }
 
+void GameState::SpawnBoss()
+{
+	this->boss = make_unique<Boss>(this->window, this->window->getSize().x / 2,
+		this->window->getSize().y / 2, this->player);
+}
+
 void GameState::KillEnemy()
 {
 	for (auto it = this->player->GetBullets().begin(); it != this->player->GetBullets().end(); it++)
@@ -88,15 +94,16 @@ void GameState::KillEnemy()
 		{
 			if ((*it)->GetBounds().intersects((*it2)->GetBounds()))
 			{
-				this->points += 10;
+				it2->get()->ReceiveDamage(1);
 
-				/*if (it2 != this->enemies.begin())
-					it2--;*/
-
-				it2 = this->enemies.erase(it2);
+				if (it2->get()->GetHp() <= 0)
+				{
+					this->points += 10;
+					it2 = this->enemies.erase(it2);
+				}
 
 				if (this->cptEnemies == 0) {
-					this->DropBonus((*it)->GetShape().getPosition().x, (*it)->GetShape().getPosition().y);
+					this->DropBonus((*it2)->GetShape().getPosition().x, (*it2)->GetShape().getPosition().y);
 				}
 
 				break;
@@ -135,6 +142,9 @@ void GameState::Update(const float& _dt)
 
 	if (!this->bonus)
 	{
+		if (this->boss)
+			this->boss.get()->Update(_dt);
+
 		this->UpdateEnemies(_dt);
 		this->player->Update(_dt);
 	}
@@ -181,8 +191,11 @@ void GameState::PickedUpBonus(const float& _dt)
 		this->goToNextLevel = true;
 		this->level++;
 
-		if(this->level <= 5)
+		if (this->level <= 5)
 			this->cptEnemies = this->level * 10 - 5;
+
+		if (this->level == 6)
+			this->SpawnBoss();
 	}
 }
 
@@ -190,6 +203,11 @@ void GameState::RenderEnemies(RenderTarget* _target)
 {
 	for (auto& it : this->enemies)
 		it->Draw(*_target);
+}
+
+void GameState::RenderBoss(RenderTarget* _target)
+{
+	this->boss.get()->Draw(*_target);
 }
 
 void GameState::RenderPlayer(RenderTarget* _target)
@@ -210,6 +228,9 @@ void GameState::Render(RenderTarget* _target)
 	this->RenderPlayer(_target);
 	this->RenderEnemies(_target);
 
+	if (this->boss)
+		this->RenderBoss(_target);
+
 	if (this->bonus)
 	{
 		if (this->goToNextLevel)
@@ -217,5 +238,6 @@ void GameState::Render(RenderTarget* _target)
 		else
 			this->RenderBonus(_target);
 	}
+
 
 }

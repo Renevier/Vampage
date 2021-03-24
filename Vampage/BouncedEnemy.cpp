@@ -4,9 +4,8 @@
 BouncedEnemy::BouncedEnemy(RenderWindow* _window, float _x, float _y, Player* _player)
 	:Enemy(_window, _x, _y, _player)
 {
+	this->hp = 1;
 	this->movementSpeed = 500.f;
-	this->player = _player;
-	this->window = _window;
 
 	this->InitShape(Color::Cyan, Vector2f(120, 120));
 

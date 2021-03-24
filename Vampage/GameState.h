@@ -5,6 +5,7 @@
 #include "Enemy.h"
 #include "RangedEnnemy.h"
 #include "BouncedEnemy.h"
+#include "Boss.h"
 #include "Bonus.h"
 #include "LevelEnded.h"
 
@@ -23,6 +24,7 @@ private:
     vector<unique_ptr<Enemy>> enemies;
     unique_ptr<LevelEnded> levelEnded;
     Bonus* bonus;
+    unique_ptr<Boss> boss;
 
     bool goToNextLevel;
     bool onePass{ false };
@@ -39,6 +41,7 @@ public:
 
     void DropBonus(float _x, float _y);
     void SpawnEnemy();
+    void SpawnBoss();
     void KillEnemy();
     void PickedUpBonus(const float& _dt);
 
@@ -49,6 +52,7 @@ public:
     void PauseMenu();
 
     void RenderEnemies(RenderTarget* _target);
+    void RenderBoss(RenderTarget* _target);
     void RenderPlayer(RenderTarget* _target);
     void RenderBonus(RenderTarget* _target);
     virtual void Render(RenderTarget* _target);

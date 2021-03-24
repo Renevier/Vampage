@@ -107,9 +107,7 @@ void Player::Dash(const float& _dt)
 	}
 
 	if (Keyboard::isKeyPressed(Keyboard::Numpad2))
-	{
 		this->nbDash = 10;
-	}
 }
 
 void Player::Shoot(const float& _dt)
@@ -127,21 +125,18 @@ void Player::Shoot(const float& _dt)
 	for (int i = 0; i < this->bullets.size(); i++) {
 		this->bullets[i]->Update(_dt);
 
-		if (!this->bullets[i]->GetBounds().intersects(this->noSpawnArea.getGlobalBounds()))
-		{
-			if (i != 0)
-				i--;
+		float distance = sqrt(
+			pow(this->shape.getPosition().x - this->bullets[i]->GetShape().getPosition().x, 2) +
+			pow(this->shape.getPosition().y - this->bullets[i]->GetShape().getPosition().y, 2)
+		);
 
+		if (distance >= this->noSpawnArea.getRadius())
 			this->bullets.erase(this->bullets.begin() + i);
-		}
 	}
 }
 
 void Player::Update(const float& _dt)
 {
-	/*system("CLS");
-	cout << this->haveShield;*/
-
 	this->timeBetweenDash = this->clockDash.getElapsedTime();
 
 	this->Move(_dt);
@@ -193,5 +188,5 @@ void Player::Draw(RenderTarget& _target)
 	this->RenderBullets(_target);
 
 	_target.draw(this->shape);
-	_target.draw(this->noSpawnArea);
+	//_target.draw(this->noSpawnArea);
 }
