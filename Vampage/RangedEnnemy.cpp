@@ -26,12 +26,10 @@ void RangedEnnemy::Shoot(const float& _dt)
 	for (int i = 0; i < this->bullets.size(); i++) {
 		this->bullets[i]->Update(_dt);
 
-		Vector2f destroyBulletPos = Vector2f(
-			this->bullets[i]->GetShape().getPosition().x - this->shape.getPosition().x,
-			this->bullets[i]->GetShape().getPosition().y - this->shape.getPosition().y
-		);
-
-		if (abs(destroyBulletPos.x) + abs(destroyBulletPos.y) >= this->shootingLenght)
+		if (this->bullets[i]->GetShape().getPosition().x <= 0.f ||
+			this->bullets[i]->GetShape().getPosition().x >= this->window->getSize().x ||
+			this->bullets[i]->GetShape().getPosition().y >= this->window->getSize().y ||
+			this->bullets[i]->GetShape().getPosition().y <= 0.f)
 		{
 			if (i != 0)
 				i--;

@@ -29,3 +29,12 @@ inline sf::RectangleShape rectangle(sf::Vector2f pos, sf::Vector2f size, sf::Col
 
 	return shape;
 }
+
+inline bool IsDirectionPressed(sf::Keyboard::Key _key)
+{
+	bool isPress = false;
+	if (sf::Keyboard::isKeyPressed(_key))
+		isPress = true;
+
+	return isPress;
+}

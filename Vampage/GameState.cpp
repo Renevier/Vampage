@@ -133,7 +133,18 @@ void GameState::UpdateEnemies(const float& _dt)
 	for (auto i = 0; i < this->enemies.size(); i++)
 		this->enemies.at(i)->Update(_dt);
 
+}
+
+void GameState::UpdatePlayer(const float& _dt)
+{
+	this->player->Update(_dt);
 	this->KillEnemy();
+
+	if (this->player->GetHP() <= 0)
+	{
+		this->player = nullptr;
+		delete this->player;
+	}
 }
 
 void GameState::Update(const float& _dt)
@@ -145,15 +156,18 @@ void GameState::Update(const float& _dt)
 		if (this->boss)
 			this->boss.get()->Update(_dt);
 
+		if (!this->player)
+			return;
+
 		this->UpdateEnemies(_dt);
-		this->player->Update(_dt);
+		this->UpdatePlayer(_dt);
 	}
 	else
 	{
 		if (!this->goToNextLevel)
 		{
 			this->UpdateEnemies(_dt);
-			this->player->Update(_dt);
+			this->UpdatePlayer(_dt);
 			this->PickedUpBonus(_dt);
 		}
 		else
@@ -225,7 +239,9 @@ void GameState::Render(RenderTarget* _target)
 	if (!_target)
 		_target = this->window;
 
-	this->RenderPlayer(_target);
+	if (this->player)
+		this->RenderPlayer(_target);
+
 	this->RenderEnemies(_target);
 
 	if (this->boss)
@@ -238,6 +254,4 @@ void GameState::Render(RenderTarget* _target)
 		else
 			this->RenderBonus(_target);
 	}
-
-
 }

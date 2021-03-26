@@ -22,6 +22,7 @@ public:
 	~Enemy() = default;
 
 	void ReceiveDamage(int _damage);
+	void DealDamage();
 	virtual void Move(const float& _dt);
 	virtual void Update(const float& _dt);
 

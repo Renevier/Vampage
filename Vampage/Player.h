@@ -7,17 +7,30 @@ class Player
 	:public Entity
 {
 private:
+	enum class DIRECTION
+	{
+		NONE,
+		UP,
+		LEFT,
+		RIGHT,
+		DOWN
+	};
+
+	DIRECTION dir{ DIRECTION::NONE };
+
 	Texture playerTexture;
 	CircleShape noSpawnArea;
 	vector<shared_ptr<Bullet>> bullets;
 	Vector2f* mousePosView;
-	unsigned int lifePoint{ 1 };
+	unsigned int lifePoint{ 3 };
+	bool isInvu{ false };
+	float timerInvu{ 0.f };
 
 	float shootingLenght;
 
-	Clock clockDash;
-	Time timeBetweenDash;
-
+	float timeBetweenDash;
+	float dashRecover{ 0.f };
+	bool dash{ false };
 	int nbDashMax;
 	int nbDash;
 
@@ -47,6 +60,10 @@ public:
 	inline CircleShape& GetNoSpawnArea() { return this->noSpawnArea; }
 	inline const Vector2f& GetPos() const { return this->shape.getPosition(); }
 	inline vector<shared_ptr<Bullet>>& GetBullets() { return this->bullets; }
+	inline bool& GetInvu() { return this->isInvu; }
+	inline unsigned int& GetHP() { return this->lifePoint; }
 
 	inline void SetNbDash() { this->nbDash = this->nbDashMax; }
+	inline void ReceiveDamage(int _damage) { this->lifePoint -= _damage; }
+	inline void SetInvu(bool _isInvu) { this->isInvu = _isInvu;	}
 };

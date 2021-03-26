@@ -47,6 +47,7 @@ public:
 
     virtual void UpdateInput(const float& _dt);
     void UpdateEnemies(const float& _dt);
+    void UpdatePlayer(const float& _dt);
     virtual void Update(const float& _dt);
     virtual void EndState();
     void PauseMenu();

@@ -7,7 +7,7 @@ void Player::InitShape()
 		exit(0);
 
 	this->shape.setTexture(&playerTexture);
-	
+
 	this->shape.setSize(Vector2f(
 		this->shape.getTextureRect().height,
 		this->shape.getTextureRect().width
@@ -62,6 +62,7 @@ void Player::Move(const float& _dt)
 {
 	if (Keyboard::isKeyPressed(Keyboard::Z))
 	{
+		this->dir = DIRECTION::UP;
 		this->velocity.y = 0.f;
 
 		this->shape.move(0, -this->movementSpeed * _dt);
@@ -71,6 +72,7 @@ void Player::Move(const float& _dt)
 
 	if (Keyboard::isKeyPressed(Keyboard::S))
 	{
+		this->dir = DIRECTION::DOWN;
 		this->velocity.y = 0.f;
 
 		this->shape.move(0, this->movementSpeed * _dt);
@@ -80,6 +82,7 @@ void Player::Move(const float& _dt)
 
 	if (Keyboard::isKeyPressed(Keyboard::Q))
 	{
+		this->dir = DIRECTION::LEFT;
 		this->velocity.x = 0.f;
 
 		this->shape.move(-this->movementSpeed * _dt, 0);
@@ -89,25 +92,55 @@ void Player::Move(const float& _dt)
 
 	if (Keyboard::isKeyPressed(Keyboard::D))
 	{
+		this->dir = DIRECTION::RIGHT;
 		this->velocity.x = 0.f;
 
 		this->shape.move(this->movementSpeed * _dt, 0);
 		this->velocity.x += this->movementSpeed * _dt;
 		this->velocity.y = 0;
 	}
+
+	this->Dash(_dt);
 }
 
 void Player::Dash(const float& _dt)
 {
-	if (Keyboard::isKeyPressed(Keyboard::Space) && this->nbDash > 0 && this->timeBetweenDash.asSeconds() >= 2)
+	if (IsDirectionPressed(sf::Keyboard::Key::LShift) && this->nbDash > 0 && this->timeBetweenDash >= .2f)
 	{
-		this->timeBetweenDash = this->clockDash.restart();
-		this->shape.move(this->velocity.x * 2 * _dt, this->velocity.y * 2 * _dt);
+		this->dash = true;
+		this->timeBetweenDash = 0.f;
 		this->nbDash--;
+		this->isInvu = true;
+
+		if (this->dir == DIRECTION::UP)
+			this->shape.move(0, -this->movementSpeed * 10 * _dt);
+
+		if (this->dir == DIRECTION::RIGHT)
+			this->shape.move(this->movementSpeed * 10 * _dt, 0);
+
+		if (this->dir == DIRECTION::LEFT)
+			this->shape.move(-this->movementSpeed * 10 * _dt, 0);
+
+		if (this->dir == DIRECTION::DOWN)
+			this->shape.move(0, this->movementSpeed * 10 * _dt);
 	}
 
-	if (Keyboard::isKeyPressed(Keyboard::Numpad2))
-		this->nbDash = 10;
+	if (this->dash && this->timeBetweenDash >= 1.f)
+	{
+		this->dash = false;
+		this->timeBetweenDash = 0;
+	}
+
+	if (this->nbDash < this->nbDashMax)
+	{
+		this->dashRecover += _dt;
+
+		if (this->dashRecover >= 1.f)
+		{
+			this->nbDash++;
+			this->dashRecover = 0.f;
+		}
+	}
 }
 
 void Player::Shoot(const float& _dt)
@@ -137,13 +170,24 @@ void Player::Shoot(const float& _dt)
 
 void Player::Update(const float& _dt)
 {
-	this->timeBetweenDash = this->clockDash.getElapsedTime();
+	system("CLS");
+	cout << this->lifePoint;
+
+	this->timeBetweenDash += _dt;
 
 	this->Move(_dt);
 	this->Shoot(_dt);
-	this->Dash(_dt);
 
 	this->UpdateNoSpawnArea();
+
+	if (this->isInvu)
+		this->timerInvu += _dt;
+
+	if (this->isInvu >= 65.f * _dt)
+	{
+		this->timerInvu = 0.f;
+		this->isInvu = false;
+	}
 }
 
 void Player::UpdateNoSpawnArea()
@@ -159,7 +203,7 @@ void Player::CheckBonus()
 			this->haveShield = true;
 		else if (it->GetEffect() == BONUS_EFFECT::SHIELD && this->haveShield)
 			this->lifePoint++;
-		
+
 		if (it->GetEffect() == BONUS_EFFECT::DASH_MAX)
 			this->nbDashMax = 5;
 		else

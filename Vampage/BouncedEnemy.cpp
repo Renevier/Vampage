@@ -35,4 +35,5 @@ void BouncedEnemy::Update(const float& _dt)
 {
 	this->Move(_dt);
 	this->Bounce();
+	this->DealDamage();
 }

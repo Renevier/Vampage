@@ -37,6 +37,18 @@ void Enemy::ReceiveDamage(int _damage)
 	this->hp -= _damage;
 }
 
+void Enemy::DealDamage()
+{
+	if (this->player->GetShape().getGlobalBounds().intersects(this->shape.getGlobalBounds()))
+	{
+		if (!this->player->GetInvu())
+		{
+			this->player->ReceiveDamage(1);
+			this->player->SetInvu(true);
+		}
+	}
+}
+
 void Enemy::Move(const float& _dt)
 {
 	this->direction = this->player->GetPos() - this->shape.getPosition();
@@ -53,6 +65,7 @@ void Enemy::Update(const float& _dt)
 {
 	this->deleteBullets.setPosition(this->shape.getPosition());
 	this->Move(_dt);
+	this->DealDamage();
 }
 
 void Enemy::Draw(RenderTarget& _target)
