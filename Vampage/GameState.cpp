@@ -27,6 +27,11 @@ void GameState::InitEndLevel()
 	this->levelEnded = make_unique<LevelEnded>(this->window);
 }
 
+void GameState::InitHUD()
+{
+	this->hud = new HUD(this->player, this->window);
+}
+
 GameState::GameState(RenderWindow* _window, stack<State*>* _states)
 	: State(_window, _states)
 {
@@ -34,11 +39,14 @@ GameState::GameState(RenderWindow* _window, stack<State*>* _states)
 	this->InitTexture();
 	this->InitEndLevel();
 	this->InitPlayer();
+	this->InitHUD();
 }
 
 GameState::~GameState()
 {
 	delete this->bonus;
+	delete this->player;
+	delete this->hud;
 }
 
 void GameState::DropBonus(float _x, float _y)
@@ -149,6 +157,9 @@ void GameState::UpdatePlayer(const float& _dt)
 
 void GameState::Update(const float& _dt)
 {
+	if (!this->player)
+		return;
+
 	this->UpdateMousePosition();
 
 	if (!this->bonus)
@@ -156,9 +167,7 @@ void GameState::Update(const float& _dt)
 		if (this->boss)
 			this->boss.get()->Update(_dt);
 
-		if (!this->player)
-			return;
-
+		this->hud->Update();
 		this->UpdateEnemies(_dt);
 		this->UpdatePlayer(_dt);
 	}
@@ -238,6 +247,8 @@ void GameState::Render(RenderTarget* _target)
 {
 	if (!_target)
 		_target = this->window;
+
+	this->hud->Draw(*_target);
 
 	if (this->player)
 		this->RenderPlayer(_target);

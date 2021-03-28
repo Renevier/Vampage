@@ -26,10 +26,17 @@ void RangedEnnemy::Shoot(const float& _dt)
 	for (int i = 0; i < this->bullets.size(); i++) {
 		this->bullets[i]->Update(_dt);
 
+		if (this->bullets[i]->GetShape().getGlobalBounds().intersects(this->player->GetBounds()))
+		{
+			this->bullets.erase(this->bullets.begin() + i);
+			this->player->ReceiveDamage(1);
+		}
+		
 		if (this->bullets[i]->GetShape().getPosition().x <= 0.f ||
 			this->bullets[i]->GetShape().getPosition().x >= this->window->getSize().x ||
 			this->bullets[i]->GetShape().getPosition().y >= this->window->getSize().y ||
-			this->bullets[i]->GetShape().getPosition().y <= 0.f)
+			this->bullets[i]->GetShape().getPosition().y <= 0.f
+			)
 		{
 			if (i != 0)
 				i--;

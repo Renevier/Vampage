@@ -39,7 +39,7 @@ void Enemy::ReceiveDamage(int _damage)
 
 void Enemy::DealDamage()
 {
-	if (this->player->GetShape().getGlobalBounds().intersects(this->shape.getGlobalBounds()))
+	if (this->shape.getGlobalBounds().intersects(this->player->GetBounds()))
 	{
 		if (!this->player->GetInvu())
 		{

@@ -8,6 +8,7 @@
 #include "Boss.h"
 #include "Bonus.h"
 #include "LevelEnded.h"
+#include "HUD.h"
 
 class GameState :
     public State
@@ -20,6 +21,7 @@ private:
     int cptEnemies;
     float timerForNextLevel;
 
+    HUD* hud;
     Player* player;
     vector<unique_ptr<Enemy>> enemies;
     unique_ptr<LevelEnded> levelEnded;
@@ -27,13 +29,13 @@ private:
     unique_ptr<Boss> boss;
 
     bool goToNextLevel;
-    bool onePass{ false };
 
 private:
     void InitPlayer();
     void InitTexture();
     void InitVariables();
     void InitEndLevel();
+    void InitHUD();
 
 public:
     GameState(RenderWindow* _window, stack<State*>* _states);

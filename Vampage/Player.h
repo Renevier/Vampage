@@ -26,8 +26,6 @@ private:
 	bool isInvu{ false };
 	float timerInvu{ 0.f };
 
-	float shootingLenght;
-
 	float timeBetweenDash;
 	float dashRecover{ 0.f };
 	bool dash{ false };

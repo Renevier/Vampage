@@ -43,7 +43,6 @@ Player::Player(Vector2f* _mousePosView, float _x, float _y) :
 
 	this->movementSpeed = 500.f;
 	this->mousePosView = _mousePosView;
-	this->shootingLenght = 2.f;
 }
 
 Player::~Player()
@@ -170,9 +169,6 @@ void Player::Shoot(const float& _dt)
 
 void Player::Update(const float& _dt)
 {
-	system("CLS");
-	cout << this->lifePoint;
-
 	this->timeBetweenDash += _dt;
 
 	this->Move(_dt);
@@ -183,7 +179,7 @@ void Player::Update(const float& _dt)
 	if (this->isInvu)
 		this->timerInvu += _dt;
 
-	if (this->isInvu >= 65.f * _dt)
+	if (this->timerInvu >= 45.f * _dt)
 	{
 		this->timerInvu = 0.f;
 		this->isInvu = false;
