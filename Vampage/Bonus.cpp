@@ -22,7 +22,7 @@ Bonus::Bonus(float _x, float _y, BONUS_EFFECT _effect)
 	if (this->effect == BONUS_EFFECT::NONE)
 		this->cShape.setFillColor(Color::Green);
 	if (this->effect == BONUS_EFFECT::SHIELD)		
-		this->cShape.setFillColor(Color::Blue);
+		this->cShape.setFillColor(Color::Green);
 	if (this->effect == BONUS_EFFECT::DASH_MAX)
 		this->cShape.setFillColor(Color::Magenta);
 	if (this->effect == BONUS_EFFECT::SHOOTING_DISTANCE)
