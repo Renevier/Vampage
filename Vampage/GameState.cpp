@@ -248,7 +248,7 @@ void GameState::Render(RenderTarget* _target)
 	if (!_target)
 		_target = this->window;
 
-	this->hud->Draw(*_target);
+	//this->hud->Draw(*_target);
 
 	if (this->player)
 		this->RenderPlayer(_target);

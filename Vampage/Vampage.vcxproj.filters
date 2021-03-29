@@ -76,6 +76,9 @@
     <Filter Include="Classes\GUI\HUD\HUD">
       <UniqueIdentifier>{27c8a43a-d17d-4a2f-b7a9-c3da1b7f264e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Classes\GUI\HUD\PauseMenu">
+      <UniqueIdentifier>{d98eaf4c-1bae-41bd-988d-bfa9138f2468}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -132,6 +135,9 @@
     <ClCompile Include="HUD.cpp">
       <Filter>Classes\GUI\HUD\HUD</Filter>
     </ClCompile>
+    <ClCompile Include="PauseMenu.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -187,6 +193,9 @@
     </ClInclude>
     <ClInclude Include="HUD.h">
       <Filter>Classes\GUI\HUD\HUD</Filter>
+    </ClInclude>
+    <ClInclude Include="PauseMenu.h">
+      <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -53,6 +53,12 @@ void Boss::EraseBullets()
 
 			if (distance >= this->deleteBullets.getRadius())
 				this->ray_1.erase(this->ray_1.begin() + i);
+
+			if (this->ray_1[i].get()->GetBounds().intersects(this->player->GetBounds()))
+			{
+				this->ray_1.erase(this->ray_1.begin() + i);
+				this->player->ReceiveDamage(1);
+			}
 		}
 
 		for (int i = 0; i < this->ray_2.size(); i++)
@@ -65,6 +71,11 @@ void Boss::EraseBullets()
 			if (distance >= this->deleteBullets.getRadius())
 				this->ray_2.erase(this->ray_2.begin() + i);
 
+			if (this->ray_1[i].get()->GetBounds().intersects(this->player->GetBounds()))
+			{
+				this->ray_1.erase(this->ray_1.begin() + i);
+				this->player->ReceiveDamage(1);
+			}
 		}
 	}
 }

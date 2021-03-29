@@ -31,4 +31,3 @@ public:
 	inline const RectangleShape& GetShape() const { return this->shape; }
 	inline const int& GetHp() const { return this->hp; }
 };
-

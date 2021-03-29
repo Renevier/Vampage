@@ -104,7 +104,7 @@ void Player::Move(const float& _dt)
 
 void Player::Dash(const float& _dt)
 {
-	if (IsDirectionPressed(sf::Keyboard::Key::LShift) && this->nbDash > 0 && this->timeBetweenDash >= .2f)
+	if (IsDirectionPressed(sf::Keyboard::Key::LShift) && this->nbDash > 0 && this->timeBetweenDash >= .5f)
 	{
 		this->dash = true;
 		this->timeBetweenDash = 0.f;
