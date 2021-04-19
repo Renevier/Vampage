@@ -25,11 +25,6 @@ void MainMenuState::InitButton()
 		Color(255, 0, 0, 200), Color(250, 250, 250, 250), Color(20, 20, 20, 50),
 		Color(70, 70, 70, 0), Color(250, 250, 250, 0), Color(20, 20, 20, 0)));
 
-	/*this->buttons.emplace("BOSS", new Button(100, 600, 250, 50,
-		&this->font, "Boss", 50,
-		Color(255, 0, 0, 200), Color(250, 250, 250, 250), Color(20, 20, 20, 50),
-		Color(70, 70, 70, 0), Color(250, 250, 250, 0), Color(20, 20, 20, 0)));*/
-
 	this->buttons.emplace("EXIT", new Button(100, 700, 250, 50,
 		&this->font, "Quit", 50,
 		Color(255, 0, 0, 200), Color(250, 250, 250, 250), Color(20, 20, 20, 50),
@@ -57,11 +52,8 @@ void MainMenuState::UpdateButton()
 	if (this->buttons.at("NEW_GAME")->IsPressed())
 		this->states->push(new GameState(this->window, this->states));
 
-	/*if (this->buttons.at("BOSS")->IsPressed())
-		this->states->push(new BossState(this->window, this->states));*/
-
 	if (this->buttons.at("EXIT")->IsPressed())
-		this->Quit = true;
+		exit(0);
 }
 
 void MainMenuState::Update(const float& _dt)
@@ -85,10 +77,6 @@ void MainMenuState::Render(RenderTarget* _target)
 	_target->draw(this->background);
 
 	this->RenderButton(_target);
-
-	//print mouse potiton in the console
-	/*system("CLS");
-	cout << this->mousePosView.x << " " << this->mousePosView.y;*/
 }
 
 void MainMenuState::EndState()

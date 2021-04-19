@@ -3,7 +3,7 @@
 
 void Bonus::InitShape()
 {
-	this->cShape.setRadius(10.f);
+	this->cShape.setRadius(15.f);
 	this->cShape.setOrigin(Vector2f(this->cShape.getGlobalBounds().width / 2, this->cShape.getGlobalBounds().height / 2));
 }
 
@@ -19,12 +19,20 @@ Bonus::Bonus(float _x, float _y, BONUS_EFFECT _effect)
 
 	this->effect = _effect;
 
-	if (this->effect == BONUS_EFFECT::NONE)
-		this->cShape.setFillColor(Color::Green);
-	if (this->effect == BONUS_EFFECT::SHIELD)		
-		this->cShape.setFillColor(Color::Green);
+	if (this->effect == BONUS_EFFECT::NONE || this->effect == BONUS_EFFECT::SHIELD)
+	{
+		if (!this->bonusTexture.loadFromFile("../Resources/Sprite/Heal.png"))
+			exit(0);
+
+		this->cShape.setTexture(&bonusTexture);
+	}
 	if (this->effect == BONUS_EFFECT::DASH_MAX)
-		this->cShape.setFillColor(Color::Magenta);
+	{
+		if (!this->bonusTexture.loadFromFile("../Resources/Sprite/Dash.png"))
+			exit(0);
+
+		this->cShape.setTexture(&bonusTexture);
+	}
 	if (this->effect == BONUS_EFFECT::SHOOTING_DISTANCE)
 		this->cShape.setFillColor(Color::Red);
 	

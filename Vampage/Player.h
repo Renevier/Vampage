@@ -20,6 +20,7 @@ private:
 
 	Texture playerTexture;
 	CircleShape noSpawnArea;
+	CircleShape shield;
 	vector<shared_ptr<Bullet>> bullets;
 	Vector2f* mousePosView;
 	unsigned int lifePoint{ 3 };
@@ -35,6 +36,7 @@ private:
 	float timeBetweenShoot { 0.f };
 	vector<Bonus*> bonus;
 	bool haveShield{ false };
+	bool gainHP{ false };
 		
 private:
 	virtual void InitShape();
@@ -60,8 +62,12 @@ public:
 	inline vector<shared_ptr<Bullet>>& GetBullets() { return this->bullets; }
 	inline bool& GetInvu() { return this->isInvu; }
 	inline unsigned int& GetHP() { return this->lifePoint; }
+	inline int& GetNbDash() { return this->nbDash; }
+	inline bool& GetShield() { return this->haveShield; }
 
 	inline void SetNbDash() { this->nbDash = this->nbDashMax; }
 	inline void ReceiveDamage(int _damage) { this->lifePoint -= _damage; }
 	inline void SetInvu(bool _isInvu) { this->isInvu = _isInvu;	}
+	inline void SetShield(bool _haveShield) { this->haveShield = _haveShield;	}
+	inline void SetGainHp(bool _gainHp) { this->gainHP = _gainHp;	}
 };

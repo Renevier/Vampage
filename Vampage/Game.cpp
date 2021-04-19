@@ -3,7 +3,7 @@
 
 void Game::InitWindow()
 {
-	this->window = new RenderWindow(VideoMode::getDesktopMode(), "Yardebeul of Gardebeul");
+	this->window = new RenderWindow(VideoMode::getDesktopMode(), "Vampage", Style::Fullscreen);
 
 	this->window->setFramerateLimit(60);
 }

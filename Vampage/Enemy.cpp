@@ -43,8 +43,16 @@ void Enemy::DealDamage()
 	{
 		if (!this->player->GetInvu())
 		{
-			this->player->ReceiveDamage(1);
-			this->player->SetInvu(true);
+			if(this->player->GetShield())
+			{
+				this->player->SetShield(false);
+				this->player->SetInvu(true);
+			}
+			else
+			{
+				this->player->ReceiveDamage(1);
+				this->player->SetInvu(true);
+			}
 		}
 	}
 }

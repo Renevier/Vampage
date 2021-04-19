@@ -3,8 +3,12 @@
 
 void Bullet::InitShape()
 {
-	this->shape.setSize(Vector2f(10.f, 10.f));
-	this->shape.setFillColor(Color::Green);
+	if (!this->texture.loadFromFile("../Resources/Sprite/Bullet/spr_bullet_strip.png"))
+		exit(0);
+
+	this->shape.setTexture(&texture);
+	this->shape.setTextureRect(IntRect(0, 0, 117 / 3, 39));
+	this->shape.setSize(Vector2f(45.f, 45.f));
 	this->shape.setOrigin(Vector2f(this->shape.getGlobalBounds().width / 2,
 		this->shape.getGlobalBounds().height / 2));
 }

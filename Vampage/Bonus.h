@@ -6,6 +6,7 @@ class Bonus :
     public Entity
 {
 private:
+    Texture bonusTexture;
     CircleShape cShape;
     BONUS_EFFECT effect;
 

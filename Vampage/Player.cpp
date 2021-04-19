@@ -41,6 +41,14 @@ Player::Player(Vector2f* _mousePosView, float _x, float _y) :
 	this->InitPosition(_x, _y);
 	this->InitNoSpawnAera();
 
+	this->shield.setRadius(this->shape.getGlobalBounds().width / 2);
+	this->shield.setOrigin(Vector2f(
+		this->shield.getGlobalBounds().height / 2,
+		this->shield.getGlobalBounds().width / 2));
+	this->shield.setFillColor(Color::Transparent);
+	this->shield.setOutlineThickness(-0.5f);
+	this->shield.setOutlineColor(Color::Blue);
+
 	this->movementSpeed = 500.f;
 	this->mousePosView = _mousePosView;
 }
@@ -169,6 +177,7 @@ void Player::Shoot(const float& _dt)
 
 void Player::Update(const float& _dt)
 {
+	this->shield.setPosition(this->shape.getPosition());
 	this->timeBetweenDash += _dt;
 
 	this->Move(_dt);
@@ -195,25 +204,27 @@ void Player::CheckBonus()
 {
 	for (auto& it : this->bonus)
 	{
-		if (it->GetEffect() == BONUS_EFFECT::SHIELD && !this->haveShield)
-			this->haveShield = true;
-		else if (it->GetEffect() == BONUS_EFFECT::SHIELD && this->haveShield)
-			this->lifePoint++;
+		if (it->GetEffect() == BONUS_EFFECT::NONE && this->gainHP == false)
+		{
+			if (this->lifePoint <= 5)
+			{
+				this->lifePoint++;
+				this->gainHP = true;
+			}
+		}
 
 		if (it->GetEffect() == BONUS_EFFECT::DASH_MAX)
 			this->nbDashMax = 5;
-		else
-			this->nbDashMax = 3;
 
 		if (it->GetEffect() == BONUS_EFFECT::SHOOTING_DISTANCE)
 		{
-			this->noSpawnArea.setRadius(550.f);
+			this->noSpawnArea.setRadius(600.f);
 
 			this->noSpawnArea.setOrigin(
 				this->noSpawnArea.getRadius(),
 				this->noSpawnArea.getRadius()
 			);
-		}
+		}		
 	}
 }
 
@@ -225,8 +236,9 @@ void Player::RenderBullets(RenderTarget& _target)
 
 void Player::Draw(RenderTarget& _target)
 {
+	_target.draw(this->shape);
 	this->RenderBullets(_target);
 
-	_target.draw(this->shape);
-	//_target.draw(this->noSpawnArea);
+	if (this->haveShield)
+		_target.draw(this->shield);
 }

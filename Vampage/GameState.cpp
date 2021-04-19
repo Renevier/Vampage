@@ -32,27 +32,54 @@ void GameState::InitHUD()
 	this->hud = new HUD(this->player, this->window);
 }
 
+void GameState::InitPause()
+{
+	this->pause = make_unique<Pause>(this->window);
+
+	this->InitPauseButtons();
+}
+
+void GameState::InitPauseButtons()
+{
+	this->pause.get()->AddButtons("GAME_RETURN", 100.f, 300.f, "Resume the game");
+	this->pause.get()->AddButtons("EXIT_GAME", 100.f, 600.f, "Quit");
+}
+
+void GameState::InitDeathScreen()
+{
+	this->deathScreen = make_unique<DeathScreen>(this->window);
+
+	this->InitDeathScreenButtons();
+}
+
+void GameState::InitDeathScreenButtons()
+{
+	this->deathScreen.get()->AddButtons("MENU_RETURN", this->window->getSize().x / 2 - 100.f, 450.f, "Back to menu");
+	this->deathScreen.get()->AddButtons("QUIT", this->window->getSize().x / 2 - 100.f, 800.f, "Quit the game");
+}
+
 GameState::GameState(RenderWindow* _window, stack<State*>* _states)
-	: State(_window, _states)
+	: State(_window, _states), bPause(false), isDead(false)
 {
 	this->InitVariables();
 	this->InitTexture();
 	this->InitEndLevel();
 	this->InitPlayer();
 	this->InitHUD();
+	this->InitPause();
+	this->InitDeathScreen();
 }
 
 GameState::~GameState()
 {
 	delete this->bonus;
 	delete this->player;
-	delete this->hud;
 }
 
 void GameState::DropBonus(float _x, float _y)
 {
 	if (this->level == 1)
-		this->bonus = new Bonus(_x, _y, BONUS_EFFECT::SHIELD);
+		this->bonus = new Bonus(_x, _y, BONUS_EFFECT::NONE);
 
 	if (this->level == 2)
 		this->bonus = new Bonus(_x, _y, BONUS_EFFECT::DASH_MAX);
@@ -63,7 +90,7 @@ void GameState::DropBonus(float _x, float _y)
 	if (this->level == 4)
 		this->bonus = new Bonus(_x, _y, BONUS_EFFECT::SHOOTING_DISTANCE);
 
-	if (this->level == 5)
+	if (this->level >= 5)
 		this->bonus = new Bonus(_x, _y, BONUS_EFFECT::NONE);
 }
 
@@ -110,7 +137,7 @@ void GameState::KillEnemy()
 					it2 = this->enemies.erase(it2);
 				}
 
-				if (this->cptEnemies == 0) {
+				if (this->cptEnemies == 0 && it2->get()->GetHp() <= 0) {
 					this->DropBonus((*it2)->GetShape().getPosition().x, (*it2)->GetShape().getPosition().y);
 				}
 
@@ -118,6 +145,30 @@ void GameState::KillEnemy()
 			}
 		}
 	}
+}
+
+void GameState::UpdatePauseButton()
+{
+	for (auto it : this->pause.get()->GetButtons())
+		it.second->Update(this->mousePosView);
+
+	if (this->pause.get()->GetButtons().at("GAME_RETURN")->IsPressed())
+		this->bPause = false;
+
+	if (this->pause.get()->GetButtons().at("EXIT_GAME")->IsPressed())
+		this->states->push(new MainMenuState(this->window, this->states));
+}
+
+void GameState::UpdateDeathButton()
+{
+	for (auto it : this->deathScreen.get()->GetButtons())
+		it.second->Update(this->mousePosView);
+
+	if (this->deathScreen.get()->GetButtons().at("MENU_RETURN")->IsPressed())
+		this->states->push(new MainMenuState(this->window, this->states));
+
+	if (this->deathScreen.get()->GetButtons().at("QUIT")->IsPressed())
+		exit(0);
 }
 
 void GameState::UpdateInput(const float& _dt)
@@ -156,45 +207,65 @@ void GameState::UpdatePlayer(const float& _dt)
 }
 
 void GameState::Update(const float& _dt)
-{
-	if (!this->player)
-		return;
-
+{	
 	this->UpdateMousePosition();
 
-	if (!this->bonus)
+	if (!this->player)
 	{
-		if (this->boss)
-			this->boss.get()->Update(_dt);
-
-		this->hud->Update();
-		this->UpdateEnemies(_dt);
-		this->UpdatePlayer(_dt);
+		isDead = true;
+		this->UpdateDeathButton();
 	}
 	else
+		this->isDead = false;
+
+	if (Keyboard::isKeyPressed(Keyboard::P))
+		this->bPause = true;
+
+	if (!this->bPause && !this->isDead)
 	{
-		if (!this->goToNextLevel)
+		this->CheatCode();
+		this->hud->Update(this->level);
+
+		if (!this->player)
+			return;
+
+		this->UpdateMousePosition();
+
+		if (!this->bonus)
 		{
+			if (this->boss)
+				this->boss.get()->Update(_dt);
+
 			this->UpdateEnemies(_dt);
 			this->UpdatePlayer(_dt);
-			this->PickedUpBonus(_dt);
 		}
 		else
 		{
-			this->timerForNextLevel += _dt;
-			this->levelEnded->UpdateTimer(this->timerForNextLevel);
-			this->levelEnded->UpdateScore(this->points);
-
-			if (this->timerForNextLevel >= 5.f)
+			if (!this->goToNextLevel)
 			{
-				this->timerForNextLevel = 0.f;
-				this->bonus = nullptr;
-				this->goToNextLevel = false;
-				this->player->SetNbDash();
-				this->player->CheckBonus();
+				this->UpdateEnemies(_dt);
+				this->UpdatePlayer(_dt);
+				this->PickedUpBonus(_dt);
+			}
+			else
+			{
+				this->timerForNextLevel += _dt;
+				this->levelEnded->UpdateTimer(this->timerForNextLevel);
+				this->levelEnded->UpdateScore(this->points);
+
+				if (this->timerForNextLevel >= 5.f)
+				{
+					this->timerForNextLevel = 0.f;
+					this->bonus = nullptr;
+					this->goToNextLevel = false;
+					this->player->SetNbDash();
+					this->player->CheckBonus();
+				}
 			}
 		}
 	}
+	else if (this->bPause)
+		this->UpdatePauseButton();
 }
 
 void GameState::EndState()
@@ -206,19 +277,33 @@ void GameState::PauseMenu()
 {
 }
 
+void GameState::CheatCode()
+{
+	if (Keyboard::isKeyPressed(Keyboard::Numpad1))
+	{
+		this->enemies.clear();
+		this->cptEnemies = 0;
+
+		this->DropBonus(
+			this->window->getSize().x / 2,
+			this->window->getSize().y / 2
+		);
+	}
+}
+
 void GameState::PickedUpBonus(const float& _dt)
 {
 	if (this->player->GetShape().getGlobalBounds().intersects(this->bonus->GetBounds()))
 	{
+		if (this->bonus->GetEffect() == BONUS_EFFECT::NONE)
+			this->player->SetGainHp(false);
+
 		this->player->AddBonus(this->bonus);
 		this->goToNextLevel = true;
 		this->level++;
 
-		if (this->level <= 5)
-			this->cptEnemies = this->level * 10 - 5;
+		this->cptEnemies = this->level * 10 - 5;
 
-		if (this->level == 6)
-			this->SpawnBoss();
 	}
 }
 
@@ -248,7 +333,13 @@ void GameState::Render(RenderTarget* _target)
 	if (!_target)
 		_target = this->window;
 
-	//this->hud->Draw(*_target);
+	if (this->bPause)
+		this->pause->Draw(_target);
+
+	if (this->isDead)
+		this->deathScreen->Draw(_target);
+
+	this->hud->Draw(*_target);
 
 	if (this->player)
 		this->RenderPlayer(_target);

@@ -1,5 +1,6 @@
 #pragma once
 #include "State.h"
+#include "MainMenuState.h"
 #include "Player.h"
 #include "Tool.h"
 #include "Enemy.h"
@@ -9,6 +10,8 @@
 #include "Bonus.h"
 #include "LevelEnded.h"
 #include "HUD.h"
+#include "Pause.h"
+#include "DeathScreen.h"
 
 class GameState :
     public State
@@ -27,8 +30,12 @@ private:
     unique_ptr<LevelEnded> levelEnded;
     Bonus* bonus;
     unique_ptr<Boss> boss;
+    unique_ptr<Pause> pause;
+    unique_ptr<DeathScreen> deathScreen;
 
     bool goToNextLevel;
+    bool bPause;
+    bool isDead;
 
 private:
     void InitPlayer();
@@ -36,6 +43,10 @@ private:
     void InitVariables();
     void InitEndLevel();
     void InitHUD();
+    void InitPause();
+    void InitPauseButtons();
+    void InitDeathScreen();
+    void InitDeathScreenButtons();
 
 public:
     GameState(RenderWindow* _window, stack<State*>* _states);
@@ -47,12 +58,15 @@ public:
     void KillEnemy();
     void PickedUpBonus(const float& _dt);
 
+    void UpdatePauseButton();
+    void UpdateDeathButton();
     virtual void UpdateInput(const float& _dt);
     void UpdateEnemies(const float& _dt);
     void UpdatePlayer(const float& _dt);
     virtual void Update(const float& _dt);
     virtual void EndState();
     void PauseMenu();
+    void CheatCode();
 
     void RenderEnemies(RenderTarget* _target);
     void RenderBoss(RenderTarget* _target);

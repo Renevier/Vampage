@@ -7,6 +7,7 @@ protected:
     RenderWindow* window;
     Vector2f target;
 
+    Texture texture;
 
 private:
     void InitShape();
